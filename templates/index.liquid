@@ -68,7 +68,7 @@ $(function(){
 		<div id="owl-collection-product-recommend" class="owl-carousel owl-theme">
 			{% for product in collections[settings.collection-product-recommend-collection].products %}
 			<div class="product-item">
-				<a href="{{ product.url }}">
+				<a class="product-recommend__link" href="{{ product.url }}">
 					<img class="product-recommend__photo" src="{{ product.featured_image | img_url: 'medium' }}">
 					<div class="product-title product-recommend__title">
 						{{ product.title }}

@@ -1,3 +1,20 @@
 $(function(){
-	
+    $('.menu__overlay').css('margin-top', $('.header__desktop').height());
+    /*$('.header__search-input').hover(function(){
+        $('.header__search').css({
+            'box-shadow' : 'inset 0 0 0 1px #ff0000',
+            'border' : '1px solid #ff0000'
+        })
+    }, function(){
+        $('.header__search').css({
+            'box-shadow' : 'inset 0 0 0 1px transparent',
+            'border' : '1px solid #ababab'
+        })
+    })*/
+    $('.header__search-input').focus(function(){
+        $('.header__search').addClass('focus');
+    })
+    $('.header__search-input').focusout(function(){
+       $('.header__search').removeClass('focus');
+    })
 })

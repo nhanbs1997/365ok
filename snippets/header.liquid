@@ -110,7 +110,7 @@
 	</form>
 </header>
 
-<header class="hidden-xs">
+<header class="hidden-xs header__desktop">
 	<div class="visible-xs menu-mobile">
 		<div class="close-menu-mobile">
 
@@ -125,8 +125,8 @@
 			<div class="search col-xs-12 col-sm-4 col-md-6">
 				<form class="form-search topsearch" action="/search">
 					<input type="hidden" name="type" value="product">
-					<div class="search-input">
-						<input type="text" name="q" class="input" placeholder="Tìm kiếm..." value="">
+					<div class="search-input header__search">
+						<input type="text" name="q" class="input header__search-input" placeholder="Tìm kiếm..." value="">
 						<button type="submit" class="btn-search ic-bef ic-site-search ic-bold"></button>
 					</div>
 				</form>
@@ -192,7 +192,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="overlay"></div>
+	<div class="overlay menu__overlay"></div>
 </header>
 <script>
 $(function(){
