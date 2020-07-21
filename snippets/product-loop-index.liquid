@@ -1,0 +1,32 @@
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% endif %}
+<div class="product-items">
+	<div class="img-top">
+		{%if on_sale %}<span class="sale-label">{{product.variants.first.compare_at_price | minus: product.variants.first.price | divided_by:product.variants.first.compare_at_price | times : 100 | round : 0}}% off</span>{%endif%}
+		<a href="{{product.url}}">
+			<img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
+		</a>
+	</div>
+	<div class="info-body">
+		<h3 class="info-title"><a href="{{product.url}}">{{product.title}}</a></h3>
+		<p class="info-price">
+			<span class="new-price {%if on_sale %}color{%endif%}">{{product.price | money}}</span>
+			{%if on_sale %}
+			<del class="old-price">{{product.compare_at_price | money}}</del>
+			{%endif%}
+		</p>
+		<div class="buy-fast">
+			<a href="{{product.url}}" data-id="{{product.variants.first.id}}">
+				<i class="fa fa-shopping-cart"></i>
+				<span>Mua hàng</span>
+			</a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,115 @@
+<div class="container">
+	<div id="layout-page" class="mb40">
+		<h1>Tìm kiếm</h1>
+		{% paginate search.results by settings.pagination_limit %}
+		{% if search.terms == nil %}
+		<div class="content-page" id="search">
+			<div class="expanded-message">
+				<div class="search-field">
+					<form class="search clearfix" action="/search">
+						<input type="submit" alt="Go" id="go"/>
+						<input type="hidden" name="type" value="product" />
+						<input type="text" name="q" class="search_box" placeholder="Tìm kiếm" value="{{search.terms}}"  />
+					</form>
+				</div>
+			</div> 
+		</div>
+		{% else %}
+
+		{% if search.results.size == 0 %}
+		<div class="content-page" id="search">
+			<div class="expanded-message">
+				<h2>Không tìm thấy nội dung nào bạn yêu cầu</h2>
+				<span class="subtext">
+					Không tìm thấy <strong>'{{ search.terms }}'</strong> . Vui lòng tìm kiếm với từ khóa khác.
+				</span>
+				<div class="search-field">
+					<form class="search clearfix" action="/search">
+						<input type="submit" alt="Go" id="go"/>
+						<input type="hidden" name="type" value="product" />
+						<input type="text" name="q" class="search_box" placeholder="Tìm kiếm" value="{{search.terms}}"  />
+					</form>
+				</div>
+			</div>
+		</div>
+		{% else %}
+
+		<div class="content-page" id="search">
+			<span class="subtext">
+				Kết quả cho  <strong>"{{ search.terms }}"</strong>.
+			</span>
+			<div class="collection-list fix-padding row">
+				<!-- Begin results -->
+				{% for product in search.results %}
+				{% for variant in product.variants %}
+				<div class="col-xs-6 col-sm-6 col-md-3 product-item-wrap">
+					{%include 'product-loop'%}
+				</div>
+				{% endfor %}
+				{% endfor %}
+			</div>
+			<div class="paginate clearfix">
+				{% include 'pagination-default'%}
+			</div>
+		</div>
+		{% endif %}
+		{% endif %}
+
+		{% endpaginate %}
+		<!-- /#search -->
+	</div>
+</div>
+<style>
+	.expanded-message h2{
+	font-size: 20px;
+	}
+	input#go {
+	width: 34px;
+	height: 34px;
+	float: right;
+	background: #000 url(//hstatic.net/0/0/global/design/theme-default/icon-search.png) center no-repeat;
+	margin: 0;
+	font-size: 0px;
+	position: relative;
+	top: 0;
+	border: 1px solid #000;
+	}
+	#search .search_box{
+	width: calc(100% - 34px)!important;
+	float: left;
+	outline: none;
+	padding: 0px 0px 0px 10px;
+	line-height: 32px;
+	border: 1px solid #ccc;
+	}
+</style>
+<script>
+$(function(){
+	var seen = {};
+	$('#search .product-item-wrap .img_default').each(function() {
+		var txt = $(this).attr('src');
+		if (seen[txt])
+			$(this).parents('.product-item-wrap').remove();
+		else
+			seen[txt] = true;
+	});
+
+
+	$('.choise-color').hover(function(){
+		var image = $(this).data('img');
+		$(this).addClass('active').siblings().removeClass('active');
+		$(this).parents('.product-items').find('.img_default').attr('src', image);
+	}, function(){	
+		$('.choise-color:first-child').addClass('active').siblings().removeClass('active').trigger('click');
+	})
+	$('.img_default').hover(function(){
+		$(this).css('opacity', '0')
+	}, function(){	
+		$(this).css('opacity', '1')
+	})
+
+
+
+
+})
+</script>

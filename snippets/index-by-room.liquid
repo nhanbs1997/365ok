@@ -1,0 +1,23 @@
+{%if settings.index_promotion_show%}
+<div class="index-promotion">
+	<div class="container">
+		<h2 class="index-title">{{settings.index_promotion_title}}</h2>
+		<div class="room-list clearfix">
+			{% for link in linklists[settings.index_promotion_room].links | limit: 3 %}
+			<div class="room-item">
+				<a href="{{link.url}}">
+					<div class="img" style="background: url({{link.object.image.src | img_url: 'large'}}) no-repeat;background-size: cover;background-position: center;"></div>
+					<span>{{link.title}}</span>
+				</a>
+			</div>
+			{%endfor%}
+		</div>
+		{% comment %}
+		<div class="view-more">
+			<a href="{{settings.index_promotion_link}}">{{settings.index_promotion_link_title}}</a>
+		</div>
+		{% endcomment %}
+	</div>
+</div>
+{%endif%}
+

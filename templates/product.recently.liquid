@@ -1,0 +1,2 @@
+{%layout none%}
+{{product.url}}####{{product.title}}####{% if product.price == 0 %}Liên hệ{% else %}{{product.price | money}}{% endif %}####{%if product.images.size > 0%}{{ product.featured_image.src | product_img_url: 'large' }}{%else%}//hstatic.net/0/0/global/design/theme-default/no-image.png{%endif%}

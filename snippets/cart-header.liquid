@@ -1,0 +1,54 @@
+{% if cart.item_count == 0 %}
+<p class="empty">
+	Giỏ hàng đang trống.
+</p>
+{% else %}
+<div class="cart-mini">
+	<table class="cart-hidden">
+		<thead>
+			<tr>
+				<th class="image">Sản phẩm</th>
+				<th class="price">Đơn giá</th>
+				<th class="price">Tổng tiền</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in cart.items %}
+			<tr>
+				<td class="image clearfix">
+					<div class="product_image">
+						<a href="{{ item.url }}">
+							<img src="{{ item | img_url: 'small' }}" />
+						</a>
+					</div>
+					<div class="title">
+						<a href="{{ item.url }}">
+							<strong>{{ item.product.title }}</strong>
+						</a>
+						<p class="variant_title">{{ item.variant.title }}</p>
+						<p class="quan">
+							Số lượng: {{ item.quantity }}
+						</p>
+					</div>
+				</td>
+				<td class="price">{{ item.price | money }}</td>
+				<td class="price total-price">{{ item.line_price | money }}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td colspan="3">
+					<p class="text-right">
+						Tổng tiền: <span>{{cart.total_price | money}}</span>
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="clearfix">
+		<a href="/cart" class="mini-btn-cart pull-left">Xem giỏ hàng</a>
+		<a href="/checkout" class="mini-btn-checkout pull-right">Thanh toán</a>
+	</div>
+</div>
+{% endif %}
+
+

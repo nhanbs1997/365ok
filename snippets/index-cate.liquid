@@ -1,0 +1,42 @@
+{%if settings.index_cate_show%}
+<div class="index-cate">
+	
+	<div class="container">
+		<p class="index-cate-title">{{settings.index_cate_title}}</p>
+		<div class="show-search">
+			<form class="form-search topsearch" action="/search">
+				<input type="hidden" name="type" value="product">
+				<input type="text" name="q" class="search-input" placeholder="Tìm sản phẩm mong muốn..." value="">
+				<button type="submit" class="btn-search">Tìm kiếm</button>
+			</form>
+		</div>
+		<div class="cate-list clearfix">
+			{%for i in (1..10)%}
+			{%capture show%}index_cate_{{i}}_show{%endcapture%}
+			{%capture title%}index_cate_{{i}}_title{%endcapture%}
+			{%capture link%}index_cate_{{i}}_link{%endcapture%}
+			{%capture img%}index_cate_{{i}}.png{%endcapture%}
+			{%capture imghover%}index_cate_{{i}}_hover.png{%endcapture%}
+			{%if settings[show]%}
+			<div class="cate-item">
+				<div class="img-effect">
+					<a href="{{settings[link]}}">
+						<img class="img_default" alt="{{settings[title]}}" src="{{img | asset_url}}" />
+						<img class="img_hover" src="{{imghover | asset_url}}" alt="{{settings[title]}}">
+					</a>
+				</div>
+				<h3 class="cate-title">
+					<a href="{{settings[link]}}">{{settings[title]}}</a>
+				</h3>
+			</div>
+			{%endif%}
+			{%endfor%}
+		</div>
+		{%if settings.cate_ads_show%}
+		<div class="ads-text">
+			<a href="{{settings.cate_ads_link}}">{{settings.cate_ads}}</a>
+		</div>
+		{%endif%}
+	</div>
+</div>
+{%endif%}

@@ -1,0 +1,133 @@
+{% comment %}
+{% if settings.productspg_related_products %}
+<div class="list-like">
+	<div class="container-1200">
+		<div class="related-title">
+			<h3 class="related-title__h3">{{settings.productspg_featured_title}}</h3>
+		</div>
+		{% comment %}
+		{%assign cp = product%}
+		{% assign number_of_related_products_to_show = settings.productspg_featured_quantity %}
+
+		{% assign number_of_related_products_to_fetch = number_of_related_products_to_show %}
+
+		{% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+		{% assign found_a_collection = false %}
+		{% for c in product.collections %}
+		{% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+		{% assign found_a_collection = true %}
+		{% assign collection = c %}
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+
+		{% if collection and collection.products_count > 1 %}
+		<div id="owl-related" class="owl-carousel owl-btn-fix">
+			{% assign current_product = product %}
+			{% assign current_product_found = false %}
+			{% assign counter_p = 0 %}
+			{% for product in collection.products%}
+			{%if counter_p >= number_of_related_products_to_show%}
+
+			{%break%}
+			{%endif%}
+
+			{%if cp.handle != product.handle %}
+			<div class="item">
+
+				{%include 'product-loop-product'%}
+
+			</div>
+			{%assign counter_p =counter_p | plus : 1%}
+			{%endif%}
+			{% endfor %}
+		</div>
+		{% endif %}
+		{% endcomment %}
+		{% assign a = product.collections.first.handle %}
+		{% assign b = product.handle %}
+		<div id="owl-related" class="owl-carousel owl-btn-fix">
+			{% for product in collections[a].products%}
+			{% unless product.handle == b %}
+			<div class="item product">
+				{%include 'product-loop-product'%}
+			</div>
+			{% endunless %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	$('#owl-related').owlCarousel({
+		nav: true,
+		//autoplay: true,
+		dots: false,
+		loop: false,
+		navText:['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+		responsive:{
+			0:{
+				items: 2,
+				margin: 0
+			},
+			768:{
+				items:3,
+				margin: 10
+			},
+			1200:{
+				items:4,
+				margin: 20
+			}
+		}
+	});
+})
+</script>
+{% endif %}
+{% endcomment %}
+
+
+{% if settings.productspg_related_products %}
+<div class="list-like">
+	<div class="container-1200">
+		<div class="related-title">
+			<h3 class="related-title__h3">{{settings.productspg_featured_title}}</h3>
+		</div>
+	{% assign a = product.collections.first.handle %}
+		{% assign b = product.handle %}
+		<div id="owl-related" class="owl-carousel owl-btn-fix">
+			{% for product in collections[a].products%}
+			<div class="item">
+				{%include 'product-loop-product'%}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	$('#owl-related').owlCarousel({
+		items : 4,
+		nav: true,
+		//autoplay: true,
+		dots: false,
+		loop: false,
+		navText:['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
+		responsive:{
+			0:{
+				items: 2,
+				margin: 0
+			},
+			768:{
+				items:3,
+				margin: 10
+			},
+			1200:{
+				items:4,
+				margin: 20
+			}
+		}
+	});
+})
+</script>
+{% endif %}
+

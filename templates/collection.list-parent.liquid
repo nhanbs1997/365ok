@@ -1,0 +1,102 @@
+<div id="collection" class="collection-list">
+	<div class="container">
+		<h1 class="text-center">
+			{{ collection.title | split: '.' | last  }}
+
+
+		</h1>
+		<div class="description text-center" style="margin-bottom: 50px">
+			{{ collection.description | strip_html }}
+		</div>
+		<div class="collection-cate">
+			<ul class="lists-cate clearfix">
+				{% comment %}
+				{% for link in collections  %}
+				<li>
+					<a href="{{link.url}}">
+						<img src="{{ link.image.src }}">
+						{{link.title}}
+						<div class="text-center" style="font-weight: normal;font-size: 13px;">{{ link.products_count }} sản phẩm</div>
+					</a>
+
+				</li>
+				{%endfor%}
+				{% endcomment %}
+				{% assign a = collection.handle %}
+				{% for link in linklists.san-pham.links %}
+				{% if link.object.handle == a %}
+				{% for link2 in linklists[link.handle].links %}
+				<li data-product="{{ link2.object.products_count }}">
+					<a href="{{link2.object.url}}">
+						<img style="width: 100%" src="{{ link2.object.image.src }}">
+						{{link2.title}}
+						<div class="text-center collection-product-count" style="font-weight: normal;font-size: 13px;">{{ link2.object.products_count }} sản phẩm</div>
+					</a>
+				</li>
+				{% endfor %}
+				<li data-product="{{ link.object.products_count }}">
+					<a href="{{link.object.url}}">
+						<img style="width: 100%" src="{{ link.object.image.src }}">
+						Tất cả sản phẩm
+						<div class="text-center collection-product-count" style="font-weight: normal;font-size: 13px;">{{ link.object.products_count }} sản phẩm</div>
+					</a>
+				</li>
+				{% endif %} 
+				{% endfor %}
+			</ul>
+		</div>
+		<div id="collection-list">
+
+
+			<div class="collection-list fix-padding row">
+
+				{%if collection.products_count > 0%}
+				{%for product in collection.products%}
+				{% for variant in product.variants %}
+				<div class="col-xs-6 col-sm-6 col-md-3 product-item-wrap">
+					{%include 'product-loop' %}
+				</div>
+				{% endfor %}
+				{%endfor%}
+				{%else%}
+				<p>
+					Chưa có sản phẩm nào trong nhóm.
+				</p>
+				{%endif%}
+			</div>
+			<div class="paginate clearfix">
+				{% if paginate.pages > 1 %}
+				<div id="pagination">
+					{% if paginate.previous %}
+					<a class="page-node" data-page="prev" href="javascript:void(0)">Trước</a>
+					{% endif %}
+
+					{%for part in paginate.parts%}
+					{%if part.is_link%}
+					<span class="page page-node" data-page="{{part.title}}">{{part.title}}</span>
+					{%else%}
+					<span class="page page-node {%if part.title == paginate.current_page%}current{%endif%}" data-page="{{part.title}}">{{part.title}}</span>
+					{%endif%}
+					{%endfor%}
+
+					{% if paginate.next %}
+					<a class="page-node" data-page="next" href="javascript:void(0)">Sau</a>
+					{% endif %}
+				</div>
+				{%endif%}
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+var seen = {};
+	$('#collection .product-item-wrap .img_default').each(function() {
+		var txt = $(this).attr('src');
+		if (seen[txt])
+			$(this).parents('.product-item-wrap').remove();
+		else
+			seen[txt] = true;
+	});
+})
+</script>

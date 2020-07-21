@@ -1,0 +1,103 @@
+<div class="col-md-12 {%if article%}blog-breadcrumb{%endif%}" >
+	<ol class="breadcrumb breadcrumb-arrow hidden-sm hidden-xs">
+
+		<li><a href="/" target="_self">Trang chủ</a></li>
+
+		{% if template contains "collection" %}
+
+		<li><a href="/collections" target="_self">Danh mục</a></li>
+
+		{% if current_tags %}
+
+		<li class="active">Tag: "{{ current_tags.first | capitalize }}"</li>
+
+		{% else %}
+
+		<li class="active"><span>{{ page_title }}</span></li>
+
+		{% endif %}
+
+
+
+		{% elsif template == "search" %}
+
+		<li class="active"><span>
+
+			Tìm kiếm: "{% unless page_title == 'Search' %}{{ page_title }}{% endunless %}"
+
+			</span>
+
+		</li>
+
+		{% elsif template == "blog" %}
+
+		<li class="active"><span>Blog - {%if blog.handle == 'all'%}Tất cả bài viết{%elsif blog.handle == 'news'%}Tin tức{%else%}{{blog.title}}{%endif%}</span></li>
+
+		{% elsif template == "article" %}
+
+		<li><a href="{{ blog.url }}" target="_self">{%if blog.handle == 'news'%}Tin tức{%else%}{{blog.title}}{%endif%}</a> </li>
+
+		<li class="active"><span>{{ article.title }}</span></li>
+
+		{% elsif template == "cart" %}
+
+		<li class="active">Giỏ hàng: <span id="ajax-breadcrumb-cart-item-count">{{ cart.item_count }}</span>
+
+			<span id="ajax-breadcrumb-cart-item-text">{{ cart.item_count | pluralize: 'product', 'product' }}</span> -
+
+			<span id="ajax-breadcrumb-cart-total-price">{{ cart.total_price | money }}</span></li>
+
+		{% elsif template == "404" %}
+
+		<li class="active">Lỗi 404</li>
+
+		{% elsif template contains "customers" %}
+
+		<li><a href="/account" target="_self">Tài khoản</a></li>
+
+		{% if template contains "register" %}
+
+		<li class="active"><span>Đăng kí</span></li>
+
+		{% elsif template contains "login" %}
+
+		<li class="active">
+
+			<span id="customer-login-breadcrumb">Đăng nhập</span>
+
+			<span id="customer-recover-breadcrumb" class="no-display">Thiết lập lại</span>
+
+		</li>
+
+		{% elsif template contains "activate_account" %}
+
+		<li class="active"><span>Kích hoạt</span></li>
+
+		{% elsif template contains "reset_password" %}
+
+		<li class="active"><span>Khôi phục mật khẩu</span></li>
+
+		{% elsif template contains "addresses" %}
+
+		<li class="active"><span>Địa chỉ</span></li>
+
+		{% elsif template contains "order" %}
+
+		<li><a href="/account" target="_self">Lịch sử đặt hàng</a></li>
+
+		<li class="active"><span>{{ order.name }}</span></li>
+
+		{% else %}
+
+		<li class="active"><span>Lịch sử đặt hàng</span></li>
+
+		{% endif %}
+
+		{% else %}
+
+		<li class="active"><span>{{ page_title }}</span></li>
+
+		{% endif %}
+
+	</ol>
+</div>

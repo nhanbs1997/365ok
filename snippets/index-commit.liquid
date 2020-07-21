@@ -1,0 +1,40 @@
+{%if settings.index_commit_show%}
+<div class="index-commit">
+	<div class="container">
+		<div id="commit-list" class="row clearfix">
+			{%for i in (1..4)%}
+			{%capture show%}index_commit_{{i}}_show{%endcapture%}
+			{%capture link%}index_commit_{{i}}_link{%endcapture%}
+			{%capture title%}index_commit_{{i}}_title{%endcapture%}
+			{%capture iconTitle%}index_commit_{{i}}_icon{%endcapture%}
+			{%capture des%}index_commit_{{i}}_des{%endcapture%}
+			{%if settings[show]%}
+			<div class="commit-item col-xs-6 col-sm-3">
+				<a href="{%if settings[link] == ''%}javascript:void(0){%else%}{{settings[link]}}{%endif%}">
+					<i class="{{settings[iconTitle]}}"></i>
+					<p class="title">{{settings[title]}}</p>
+					<span>{{settings[des]}}</span>
+				</a>
+			</div>
+			{%endif%}
+			{%endfor%}
+		</div>
+		<div class="commit-info clearfix">
+			{%if settings.commit_info_1_show%}
+			<div class="commit-block">
+				<h2>{{settings.commit_info_1_title}}</h2>
+				<p>{{settings.commit_info_1_des}}</p>
+			</div>
+			{%endif%}
+			{%if settings.commit_info_2_show%}
+			<div class="commit-block">
+				<h2>{{settings.commit_info_2_title}}</h2>
+				<p>{{settings.commit_info_2_des}}</p>
+			</div>
+			{%endif%}
+		</div>
+	</div>
+</div>
+{%endif%}
+
+

@@ -1,0 +1,150 @@
+{{ 'page_94111.scss.css' | asset_url | stylesheet_tag }}
+<div class="page-introduce">
+	<div class="container-fluid">
+		<div class="row">
+			{%if settings.about_banner_1_show%}
+			<div class="banner-about1">
+				<img src="{{'about_banner_1.jpg' | asset_url}}" alt="about-happy-trade">
+				<div class="description">
+					{{pages[settings.about_banner_1_description].content}}
+				</div>
+			</div>
+			{%endif%}
+			{%if settings.about_banner_2_show%}
+			<div class="banner-about2">
+				<img src="{{'about_banner_2.jpg' | asset_url}}" alt="spend-happy-trade">
+				<div class="description">
+					{{pages[settings.about_banner_2_description].content}}
+				</div>
+			</div>
+			{%endif%}
+		</div>
+	</div>
+	<div class="container info-about">
+		<div class="row">
+			{%for i in (1..6)%}
+			{%capture show%}about_info_{{i}}_show{%endcapture%}
+			{%capture image%}about_info_{{i}}.png{%endcapture%}
+			{%capture link%}about_info_{{i}}_link{%endcapture%}
+			{%capture content%}about_info_{{i}}_content{%endcapture%}
+			{%if settings[show]%}
+			<div class="col-md-4 col-sm-6 info-loop">
+				<a href="{{settings[link]}}">
+					<div class="flex-box">
+						<img src="{{image | asset_url}}" alt="info-1">
+						<div class="content">
+							{{settings[content]}}
+						</div>
+					</div>
+				</a>
+			</div>
+			{%endif%}
+			{%endfor%}
+
+		</div>
+	</div>
+	<br>
+	{%if settings.banner_bottom_show%}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="develop-social">
+				<img src="{{'banner_bottom.jpg' | asset_url}}" alt="develop_social">
+				<div class="description">
+					{{pages[settings.banner_bottom_description].content}}
+				</div>
+			</div>
+		</div>
+	</div>
+	{%endif%}
+	{%if settings.about_formcontact_show%}
+	<div class="container form-contact-about">
+		<div class="row">
+			<div class="col-md-8 col-sm-10 col-md-offset-2 col-sm-offset-1">
+				<div class="pull-right text-right about-title">
+					<p>{{settings.about_formcontact_subtitle}}</p>
+					<h2 class="title">{{settings.about_formcontact_title}}</h2>
+					<ul>
+						{%if settings.about_social_fb%}
+						<li><a rel="nofollow" href="{{settings.about_social_fb_link}}" title="" target="_blank"><img  src="{{'facebook.png' | asset_url}}" alt=""></a></li>
+						{%endif%}
+						{%if settings.about_social_tw%}						
+						<li><a rel="nofollow" href="{{settings.about_social_tw_link}}" title="" target="_blank"><img  src="{{'twitter.png' | asset_url}}" alt=""></a></li>
+						{%endif%}
+						{%if settings.about_social_ins%}					
+						<li><a rel="nofollow" href="{{settings.about_social_ins_link}}" title="" target="_blank"><img  src="{{'instagram.png' | asset_url}}" alt=""></a></li>
+						{%endif%}
+						{%if settings.about_social_gp%}					
+						<li><a rel="nofollow" href="{{settings.about_social_gp_link}}" title="" target="_blank"><img  src="{{'google-plus.png'| asset_url}}" alt=""></a></li>
+						{%endif%}
+						{%if settings.about_social_yt%}						
+						<li><a rel="nofollow" href="{{settings.about_social_yt_link}}" title="" target="_blank"><img src="{{'youtube.png' | asset_url}}" alt=""></a></li>
+						{%endif%}
+						{%if settings.about_social_pt%}						
+						<li><a rel="nofollow" href="{{settings.about_social_pt_link}}" title="" target="_blank"><img src="{{'pinterest.png' | asset_url}}" alt=""></a></li>
+						{%endif%}					
+					</ul>
+				</div>
+				<div class="clearfix">
+
+				</div>
+				{% form 'contact' %}
+				{% if form.posted_successfully? %}
+				<div class="alert alert-success">
+					Cám ơn đã liên hệ chúng tôi. Chúng tôi sẽ liên hệ sớm nhất có thể.
+				</div>
+				{% endif %}
+				<div class="form-horizontal">
+					<div class="form-group">
+						<div class="col-sm-9 col-sm-offset-3">
+							<h1 class="title">LIÊN HỆ</h1>
+						</div>
+					</div>
+					<div class="form-group required">
+						<div class="col-sm-3"><label for="contactFormName" class="control-label">Họ Tên</label></div>
+						<div class="col-sm-9">
+							<input required type="text" id="contactFormName" class="form-control" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+						</div>
+					</div>
+					<div class="form-group required">
+						<div class="col-sm-3"><label class="control-label" for="contactFormEmail">Địa chỉ Email</label></div>
+						<div class="col-sm-9">
+							<input required type="text" name="contact[email]" id="contactFormEmail" class="form-control" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+						</div>
+					</div>
+					<div class="form-group required">
+						<div class="col-sm-3"><label class="control-label" for="contactFormPhone">Số điện thoại</label></div>
+						<div class="col-sm-9">
+							<input required type="text" name="contact[phone]" value="{%if form.phone%}{{form.phone}}{%endif%}" id="contactFormPhone" class="form-control">
+						</div>
+					</div>
+					<div class="form-group required">
+						<div class="col-sm-3"><label class="control-label" for="contactFormSubject">Chủ đề</label></div>
+						<div class="col-sm-9">
+							<select name="contact[subject]" id="contactFormSubject" class="form-control">
+								<option value=""></option>
+								<option value="10">Mua hàng</option>
+								<option value="11">Người tiêu dùng giới thiệu nhà sản xuất</option>
+								<option value="12">Nhà sản xuất</option>
+								<option value="13">Khác</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group required">
+						<div class="col-sm-3"><label class="control-label" for="contactFormMessage">Nội dung liên hệ</label></div>
+						<div class="col-sm-9">
+							<textarea name="contact[body]" rows="10" id="contactFormMessage" class="form-control">{%if form.body%}{{form.body}}{%endif%}</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9 col-sm-offset-3 buttons">
+							<button type="submit" class="btn btn-send-contact">Gửi</button>
+						</div>
+					</div>
+				</div>
+				{%endform%}
+
+			</div>
+		</div>
+	</div>
+	{%endif%}
+</div>

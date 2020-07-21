@@ -1,0 +1,46 @@
+{%if settings.index_homeware_show%}
+<div class="index-product">
+	<div class="container">
+		<h2 class="index-title">{{settings.index_homeware_title}}</h2>
+		<div class="homeware-list clearfix">
+			<div id="owl-index-product" class="owl-carousel owl-theme">
+				{%for link in linklists[settings.index_homeware_list].links %}
+				{% if link.object.image.src %}
+				<div class="room-item index-product__item">
+					<a href="{{link.url}}">
+						<img class="index-product__photo" src="{{link.object.image.src }}">
+						<span>{{link.title}}</span>
+					</a>
+				</div>
+				{% endif %}
+				{%endfor%}
+			</div>
+		</div>
+	</div>
+</div>
+{%endif%}
+<script>
+$(function(){
+	$('#owl-index-product').owlCarousel({
+		dots: false,
+		margin: 10,
+		nav: true,	
+		navText: ["<i class='fa fa-angle-left'>","<i class='fa fa-angle-right'>"],
+		navClass: ['owlcarousel__prev', 'owlcarousel__next'],
+		responsive:{
+			0:{
+				items:1
+			},
+			600:{
+				items:3
+			},
+			1000:{
+				items:5
+			}
+		}
+	})
+	$('.index-product__photo').height($('.index-product__photo').width())
+})
+</script>
+
+

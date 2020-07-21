@@ -1,0 +1,77 @@
+<div id="blog" class="page-content main-content content-pages">
+	<div class="container">
+		{%include 'breadcrumb'%}
+		{% paginate blog.articles by settings.pagination_blog_limit %}
+		<!-- Begin content -->
+		<div class="blog-content col-md-12 col-sm-12 col-xs-12">
+			<div class="row"> 
+				<div class="col-md-3  col-sm-12 col-xs-12 leftsidebar-col">
+					<!-- Begin sidebar blog -->
+					{% include 'blog_sidebar' %}
+					<!-- End sidebar blog -->
+				</div>
+				<div class="col-md-9 col-sm-12 col-xs-12 " id="blog-container">
+					<div class="row">
+						<div class="articles clearfix" id="layout-page">
+							<div class="col-md-12  col-sm-12 col-xs-12">
+								<h1>{%if blog.handle == 'all'%}Tất cả bài viết{%elsif blog.handle == 'news'%}Tin tức{%else%}{{blog.title}}{%endif%}</h1>
+							</div>
+							{%if blog.articles.size == 0%}
+							<p class="col-md-12  col-sm-12 col-xs-12">Không có bài đăng nào trong mục này.</p>
+							{%else%}
+							<!-- Begin: Nội dung blog -->      
+							{% for article in blog.articles limit: settings.pagination_blog_limit_vi %}
+							
+							<div class="news-content">
+								<div class="col-md-5 col-xs-12 col-sm-12 img-article">
+									<div class="art-img">
+										<img src="{{ article.image.src | product_img_url : 'large' }}" alt="{{ article.title }}" >
+									</div>
+								</div>
+
+								<div class="col-md-7 col-sm-12 col-xs-12" >
+									<!-- Begin: Nội dung bài viết -->
+									<h2 class="title-article"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+									<div class="body-content">
+										<ul class="info-more">
+											<li><i class="fa fa-calendar-o"></i><time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d/%m/%Y' }}</time></li>
+											<li><i class="fa fa-file-text-o"></i><a href="#">{%if blog.handle == 'all'%} Tất cả bài viết {%else%}{{blog.title}}{%endif%}	</a> </li>
+											{% if blog.comments_enabled? %}
+											<li>
+
+												<i class="comment-icon fa fa-comment-o"></i>
+												<a href="{{ article.url }}#comments">
+													{{ article.comments_count }}<span> {{ article.comments_count | pluralize: 'Bình luận','Bình luận' }}</span>
+												</a>
+											</li>
+											{% endif %}	
+										</ul>
+										<p>{{ article.content | strip_html | truncatewords: 40 }}</p>
+									</div>
+									<!-- End: Nội dung bài viết -->	
+									<a class="readmore btn-rb clear-fix" href="{{ article.url }}" role="button">Xem tiếp <span class="fa fa-angle-double-right"></span></a>
+								</div>
+
+
+							</div>
+							<hr class="line-blog"/>
+							{% endfor %}
+							{%endif%}
+							<!-- End: Nội dung blog --> 
+
+						</div>
+						<div class="col-md-12">
+							<!-- Begin: Phân trang blog --> 
+							{% include 'pagination-default' %}
+							<!-- End: Phân trang blog --> 
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		<!-- End content -->
+		{% endpaginate %}
+	</div>
+</div>

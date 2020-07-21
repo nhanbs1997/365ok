@@ -1,0 +1,701 @@
+
+
+<div class="container">
+	{% if settings.logo-show %}
+	<div class="landing-logo">
+	<a href="/">
+		<img src="{{ 'landing-logo.png' | asset_url }}" width="250" height="100"/>
+</a>
+	</div>
+	{% endif %}
+	<div class="row">
+		{% if settings.youtube-show %}
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			<iframe width="560" height="315" src="{{ settings.youtube-link | replace: 'watch?v=', 'embed/' }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>
+		{% endif %}
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			{% for product in collections.san-pham-o-landing-page.products %}
+			{% assign des = product.description | replace: '<hr />', '<hr>' | split: '<hr>' %}
+
+			<div class="ten-san-pham-sale">
+				<span class="ten-san-pham">{{ product.title }}</span>
+				{% if product.compare_at_price > product.price %}
+				<span class="sale">({{ product.compare_at_price | minus: product.price | divided_by: product.compare_at_price | times: 100 | round: 0 }}% Off)</span>
+				{% endif %}
+			</div>
+			<div class="line-ten-san-pham">
+			</div>
+			<div class="mota">
+				{{ des | first }}
+			</div>
+			{% for variant in product.variants %}
+			<div class="variant-1">
+				{{ variant.option1 }}:
+			</div>
+			<div class="variant-2-price-compare">
+				<span class="variant-2">{{ variant.option2 }}:</span>
+				<span class="product-price">{{ variant.price | money }}</span>
+				{% if variant.compare_at_price > variant.price %}
+				<span class="product-compare">{{ variant.compare_at_price | money }}</span>
+				{% endif %}
+			</div>
+			{% endfor %}
+
+			{% endfor %}
+			<div class="khuyen-mai">
+				Miễn phí ship từ 2 sản phẩm, mua 1 sản phẩm phí ship 30k
+			</div>
+		</div>
+	</div>
+	<div class="dat-hang-ngay">
+		<button>
+			<a href="#dien-thong-tin" style="color: #fff;">ĐẶT HÀNG NGAY</a>
+		</button>
+	</div>
+	<div class="line-dat-hang-ngay"></div>
+
+
+	{% if settings.visao-show %}
+	{% if settings.visao-title %}
+	<div class="vi-sao">
+		{{ settings.visao-title }}
+	</div>
+	{% endif %}
+	{% if settings.visao-description %}
+	<div class="mo-ta-vi-sao">
+		{{ settings.visao-description }}
+	</div>
+	{% endif %}
+	{% if settings.visao-image-show %}
+	<div class="hinh-vit-wrap">
+		<img class="hinh-vit" src="{{ 'visao-image.jpg' | asset_url }}">
+	</div>
+	{% endif %}
+	<div class="row">
+		<div class="col-xs-12 col-sm-6">
+			{% if settings.visao-title-1 %}
+			<div class="li-do li-do-1">
+				{{ settings.visao-title-1 }}
+			</div>
+			{% endif %}
+			{% if settings.visao-description-1 %}
+			<div class="mo-ta-li-do mo-ta-li-do-1">
+				{{ settings.visao-description-1 }}
+			</div>
+			{% endif %}
+			{% if settings.visao-title-2 %}
+			<div class="li-do li-do-2">
+				{{ settings.visao-title-2 }}
+			</div>
+			{% endif %}
+			{% if settings.visao-description-2 %}
+			<div class="mo-ta-li-do mo-ta-li-do-2">
+				{{ settings.visao-description-2 }} 
+			</div>
+			{% endif %}
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			{% if settings.visao-title-3 %}
+			<div class="li-do li-do-3">
+				{{ settings.visao-title-3 }}
+			</div>
+			{% endif %}
+			{% if settings.visao-description-3 %}
+			<div class="mo-ta-li-do mo-ta-li-do-3">
+				{{ settings.visao-description-3 }} 
+			</div>
+			{% endif %}
+			{% if settings.visao-title-4 %}
+			<div class="li-do li-do-4">
+				{{ settings.visao-title-4 }}
+			</div>
+			{% endif %}
+			{% if settings.visao-description-3 %}
+			<div class="mo-ta-li-do mo-ta-li-do-4">
+				{{ settings.visao-description-4 }} 
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	{% endif %}
+
+
+	<div class="row anh-thong-tin-wrap">
+		{% if settings.thongtin-image-1-show %}
+		<div class="col-xs-12 col-sm-6">
+			<img class="anh-thong-tin anh-thong-tin-1" src="{{ 'thongtin-image-1.jpg' | asset_url }}" height="300">
+		</div>
+		{% endif %}
+		<div class="col-xs-12 col-sm-6">
+			<div class="mo-ta-thong-tin mo-ta-thong-tin-1">
+				{% if settings.thongtin-title-1 %}
+				<div class="tieu-de-thong-tin">
+					{{ settings.thongtin-title-1 }}
+				</div>
+				<div class="line-thong-tin">
+
+				</div>
+				{% endif %}
+				{% if settings.thongtin-des-short-1 %}
+				<div class="mo-ta-ngan">
+					{{ settings.thongtin-des-short-1 }}
+				</div>
+				{% endif %}
+				{% if settings.thongtin-des-long-1 %}
+				<div class="mo-ta-dai">
+					{{ settings.thongtin-des-long-1 }}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="row anh-thong-tin-wrap anh-thong-tin-wrap-2">
+		<div class="col-xs-12 col-sm-6">
+			<div class="mo-ta-thong-tin mo-ta-thong-tin-1">
+				{% if settings.thongtin-title-2 %}
+				<div class="tieu-de-thong-tin">
+					{{ settings.thongtin-title-2 }}
+				</div>
+				<div class="line-thong-tin">
+
+				</div>
+				{% endif %}
+				{% if settings.thongtin-des-short-2 %}
+				<div class="mo-ta-ngan">
+					{{ settings.thongtin-des-short-2 }}
+				</div>
+				{% endif %}
+				{% if settings.thongtin-des-long-2 %}
+				<div class="mo-ta-dai">
+					{{ settings.thongtin-des-long-2 }}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		{% if settings.thongtin-image-2-show %}
+		<div class="col-xs-12 col-sm-6 anh-thong-tin-wrap">
+			<img class="anh-thong-tin anh-thong-tin-1" src="{{ 'thongtin-image-2.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+
+	</div>
+	<div class="row anh-thong-tin-wrap">
+		{% if settings.thongtin-image-3-show %}
+		<div class="col-xs-12 col-sm-6">
+			<img class="anh-thong-tin anh-thong-tin-1" src="{{ 'thongtin-image-3.jpg' | asset_url }}" height="500">
+		</div>
+		{% endif %}
+		<div class="col-xs-12 col-sm-6">
+			<div class="mo-ta-thong-tin mo-ta-thong-tin-1">
+				{% if settings.thongtin-title-3 %}
+				<div class="tieu-de-thong-tin">
+					{{ settings.thongtin-title-3 }}
+				</div>
+				<div class="line-thong-tin">
+
+				</div>
+				{% endif %}
+				{% if settings.thongtin-des-short-3 %}
+				<div class="mo-ta-ngan">
+					{{ settings.thongtin-des-short-3 }}
+				</div>
+				{% endif %}
+				{% if settings.thongtin-des-long-3 %}
+				<div class="mo-ta-dai">
+					{{ settings.thongtin-des-long-3 }}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="mua-ngay">
+		<button>
+			<a href="#dien-thong-tin" style='color: #fff'>MUA NGAY</a>
+		</button>
+	</div>
+
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-9">
+			{% if settings.baohanh-title %}
+			<div class="che-do-bao-hanh">
+				{{ settings.baohanh-title }}
+			</div>
+
+			<div class="line-che-do-bao-hanh">
+			</div>
+			{% endif %}
+			<div class="so-ngay-mo-ta-bao-hanh">
+				{% if settings.baohanh-songay %}
+				<span class="so-ngay-bao-hanh">{{ settings.baohanh-songay }}</span>
+				{% endif %}
+				{% if settings.baohanh-description-short %}
+				<span class="mo-ta-ngan-bao-hanh">{{ settings.baohanh-description-short }}</span>
+				{% endif %}
+			</div>
+			{% if settings.baohanh-description-long %}
+			<div class="mo-ta-dai-bao-hanh">
+				{{ settings.baohanh-description-long }}
+			</div>
+
+			<div class="line-mo-ta-dai-bao-hanh">
+
+			</div>
+			{% endif %}
+		</div>
+		{% if settings.baohanh-image-show %}
+		<div class="col-xs-12 col-sm-3">
+			<img class="anh-bao-hanh" src="{{ 'baohanh-image.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+	</div>
+	{% if settings.thuvien-show %}
+	<div class="thu-vien-hinh-anh">
+		{{ settings.thuvien-title }}
+	</div>
+	<div class="line-thu-vien-hinh-anh">
+
+	</div>
+	<div class="owl-thu-vien-hinh-anh owl-carousel owl-theme">
+		{% for product in collections.san-pham-o-landing-page.products %}
+
+		{% for thumb in product.images %}
+
+		<img src="{{ thumb.src }}">
+
+		{% endfor %}
+		{% endfor %}
+	</div>
+	<script>
+	$(function(){
+		$('.owl-thu-vien-hinh-anh').owlCarousel({
+			loop:false,
+			nav:true,
+			dots: true,
+			items: 1,
+			autoHeight:true
+		})
+	})
+	</script>
+
+	<div class="mua-ngay">
+		<button>
+			<a href="#dien-thong-tin" style="color: #fff">MUA NGAY</a>
+		</button>
+	</div>
+	{% endif %}
+
+
+
+
+
+	{% if settings.kiemdinh-text-1 %}
+	<div class="kiem-dinh-chat-luong">
+		{{ settings.kiemdinh-text-1 }}
+	</div>
+	{% endif %}
+	{% if settings.kiemdinh-text-2 %}
+	<div class="kiem-tra-tai">
+		{{ settings.kiemdinh-text-2 }}
+	</div>
+	{% endif %}
+	{% if settings.kiemdinh-text-3 %}
+	<div class="noi-kiem-tra">
+		{{ settings.kiemdinh-text-3 }}
+	</div>
+	{% endif %}
+	<div class="row">
+		{% if settings.kiemdinh-anh-1-show %}
+		<div class="col-xs-12 col-sm-6">
+			<img class="anh-kiem-tra anh-kiem-tra-1" src="{{ 'kiemdinh-anh-1.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+		{% if settings.kiemdinh-anh-2-show %}
+		<div class="col-xs-12 col-sm-6">
+			<img class="anh-kiem-tra anh-kiem-tra-2" src="{{ 'kiemdinh-anh-2.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+	</div>
+
+
+
+	{% if settings.doitac-text-1 %}
+	<div class="doi-tac-dong-hanh">
+		{{ settings.doitac-text-1 }}
+	</div>
+	{% endif %}
+	{% if settings.doitac-text-2 %}
+	<div class="co-mat-tren">
+		{{ settings.doitac-text-2 }}
+	</div>
+	{% endif %}
+	<div class="row thuong-hieu-wrap">
+		{% if settings.doitac-anh-1-show %}
+		<div class="col-xs-6 col-sm-2">
+			<img src="{{ 'doitac-anh-1.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+		{% if settings.doitac-anh-2-show %}
+		<div class="col-xs-6 col-sm-2">
+			<img src="{{ 'doitac-anh-2.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+		{% if settings.doitac-anh-3-show %}
+		<div class="col-xs-6 col-sm-2">
+			<img src="{{ 'doitac-anh-3.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+		{% if settings.doitac-anh-4-show %}
+		<div class="col-xs-6 col-sm-2">
+			<img src="{{ 'doitac-anh-4.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+		{% if settings.doitac-anh-5-show %}
+		<div class="col-xs-6 col-sm-2">
+			<img src="{{ 'doitac-anh-5.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+	</div>
+	{% if settings.khachhang-text-1 %}
+	<div class="icon-khach-hang">
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 24 24" fill="rgba(24,70,186,1)"> <path d="M18,16H6V15.1C6,13.1 10,12 12,12C14,12 18,13.1 18,15.1M12,5.3C13.5,5.3 14.7,6.5 14.7,8C14.7,9.5 13.5,10.7 12,10.7C10.5,10.7 9.3,9.5 9.3,8C9.3,6.5 10.5,5.3 12,5.3M19,2H5C3.89,2 3,2.89 3,4V18A2,2 0 0,0 5,20H9L12,23L15,20H19A2,2 0 0,0 21,18V4C21,2.89 20.1,2 19,2Z"></path> </svg>
+	</div>
+
+	<div class="khach-hang-noi-gi">
+		{{ settings.khachhang-text-1 }}
+	</div>
+	<div class="icon-3-cham">
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 24 24" fill="rgba(27,73,191,1)"> <path d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"></path> </svg>
+	</div>
+	{% endif %}
+	<div class="row feedback-wrap">
+		{% if settings.khachhang-anh-1-show %}
+		<div class="col-xs-12 col-sm-3">
+			<img src="{{ 'khachhang-anh-1.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+		{% if settings.khachhang-anh-2-show %}
+		<div class="col-xs-12 col-sm-3">
+			<img src="{{ 'khachhang-anh-2.jpg' | asset_url }}">
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% if settings.googlesheet-or-checkout == 'checkout' %}
+<!-- =========================== CHECK OUT - START =========================== -->
+{% if settings.form-show %}
+<div class="dien-thong-tin" id="dien-thong-tin">
+	<div class="container">
+		{% if settings.form-text-1 %}
+		<div class="title">
+			{{ settings.form-text-1 }}
+		</div>
+		{% endif %}
+		<div class="description">
+			{% if settings.form-text-2 %}{{ settings.form-text-2 }}{% endif %} <span>{% if settings.form-text-3 %}{{ settings.form-text-3 }}{% endif %}</span>
+		</div>
+
+
+		<form id="checkout" class="checkout-wrap" >
+			<select name="id" id="product-select" class="hide">
+				{% for product in collections.san-pham-o-landing-page.products %}
+				{% for variant in product.variants %}
+				<option data-title="{{ variant.title | replace: ' / ', '' }}" data-variant-1="{{ variant.option1 }}" data-variant-2="{{ variant.option2 }}" value="{{ variant.id }}">{{ variant.title | replace: ' / ', '' }}</option>
+				{% endfor %}
+				{% endfor %}
+			</select>
+			<select id="form-variant1" class="form-control" required>
+				{% for product in collections.san-pham-o-landing-page.products %}
+				<option value="" disabled selected hidden>Chọn màu sắc</option>
+				{% for variant in product.variants %}
+				{% assign value = variant.options[0] %}
+				{% unless values contains value %}
+				{% assign values = values | join: ',' %}
+				{% assign values = values | append: ',' | append: value %} 
+				{% assign values = values | split: ',' %} 
+				<option>{{ value }}</option>
+				{% endunless %}
+				{% endfor %}
+				{% endfor %}
+			</select>
+			<select id="form-variant2" class="form-control" required>
+				{% for product in collections.san-pham-o-landing-page.products %}
+				<option value="" disabled selected hidden>Chọn kích thước</option>
+				{% for variant in product.variants %}
+				{% assign value = variant.options[1] %}
+				{% unless values contains value %}
+				{% assign values = values | join: ',' %}
+				{% assign values = values | append: ',' | append: value %} 
+				{% assign values = values | split: ',' %} 
+				<option>{{ value }}</option>
+				{% endunless %}
+				{% endfor %}
+				{% endfor %}
+			</select>
+			<input min="1" name="quantity" class="form-control" type="number" id="form-soluong" placeholder="Số lượng" required>
+			<input type="submit" class="btn-register" value="ĐẶT HÀNG" />
+		</form>
+
+
+		<script>
+		$(function(){
+			var a = $('#product-select option:selected').data('variant-1'), b = $('#product-select option:selected').data('variant-2'), c = $('#product-select option:selected').text();
+			console.log(c);
+			$('#form-variant1').on('change', function() {
+				a = this.value;
+				c = a + b;
+				console.log(c);
+				$('#product-select option').each(function(){
+					if(c == $(this).html()){
+						$('#product-select').val($(this).attr('value'));
+					}
+				})
+			});
+			$('#form-variant2').on('change', function() {
+				b = this.value;
+				c = a + b;
+				$('#product-select option').each(function(){
+					if(c == $(this).html()){
+						$('#product-select').val($(this).attr('value'));
+					}
+				})
+			});
+			$("#checkout").submit(function(event){
+				var data = $('form#checkout').serialize();
+				$.ajax({
+					type : 'POST', 
+					url: '/cart/add.js',
+					dataType:'json',
+					data : data,
+					success: function(line_item) {
+
+						window.location = '/checkout';
+
+					},
+					error: function(XMLHttpRequest, textStatus) {
+						Haravan.onError(XMLHttpRequest, textStatus);
+					}
+				});
+				return false;
+			});
+			
+
+		})
+		</script>
+	</div>
+</div>
+{% endif %}
+<!-- =========================== CHECK OUT - END =========================== -->
+{% else %}
+<!-- =========================== GOOGLE SHEET - START =========================== -->
+{% if settings.form-show %}
+<div class="dien-thong-tin" id="dien-thong-tin">
+	<div class="container">
+		{% if settings.form-text-1 %}
+		<div class="title">
+			{{ settings.form-text-1 }}
+		</div>
+		{% endif %}
+		<div class="description">
+			{% if settings.form-text-2 %}{{ settings.form-text-2 }}{% endif %} <span>{% if settings.form-text-3 %}{{ settings.form-text-3 }}{% endif %}</span>
+		</div>
+		<form id="google-sheet">
+
+
+			{% for product in collections.san-pham-o-landing-page.products %}
+			<input required name="Tên sản phẩm" id="form-productname" class="hide" value="{{ product.title }}">
+			{% endfor %}
+			<input required name="Họ tên" id="form-hoten" required type="text" class="form-control"  placeholder="Họ tên" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+			
+			<input required name="Số điện thoại" id="form-phone" type="tel" placeholder="Số điện thoại" required pattern="[0-9]{10,12}" type="text" class="form-control" aria-describedby="basic-addon1">
+			<textarea required name="Địa chỉ" id="form-diachi" required rows="6" class="form-control" placeholder="Địa chỉ" id="contactFormMessage">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+			<select required name="Màu sắc" id="form-variant1" class="form-control">
+				{% for product in collections.san-pham-o-landing-page.products %}
+				<option value="" disabled selected hidden>Chọn màu sắc</option>
+				{% for variant in product.variants %}
+				{% assign value = variant.options[0] %}
+				{% unless values contains value %}
+				{% assign values = values | join: ',' %}
+				{% assign values = values | append: ',' | append: value %} 
+				{% assign values = values | split: ',' %} 
+				<option>{{ value }}</option>
+				{% endunless %}
+				{% endfor %}
+				{% endfor %}
+			</select>
+			<select required name="Kích thước" id="form-variant2" class="form-control">
+				{% for product in collections.san-pham-o-landing-page.products %}
+				<option value="" disabled selected hidden>Chọn kích thước</option>
+				{% for variant in product.variants %}
+				{% assign value = variant.options[1] %}
+				{% unless values contains value %}
+				{% assign values = values | join: ',' %}
+				{% assign values = values | append: ',' | append: value %} 
+				{% assign values = values | split: ',' %} 
+				<option>{{ value }}</option>
+				{% endunless %}
+				{% endfor %}
+				{% endfor %}
+			</select>
+			<input min="1" required name="Số lượng" class="form-control" type="number" id="form-soluong" placeholder="Số lượng">
+
+			<input type="submit" class="btn-register" value="ĐẶT HÀNG" />
+		</form>
+		<script>
+		$(document).ready(function(){ 
+			
+			$("#google-sheet").submit(function(event){
+				var data = $('form#google-sheet').serialize();
+				$.ajax({
+					type : 'GET', 
+					url : 'https://script.google.com/macros/s/AKfycby2opiDVCguPe96yGCD8gRV453pBj7yNdzoSwYriftamUBYr9E/exec',
+					dataType:'json',
+					crossDomain : true,
+					data : data,
+					success : function(data)
+					{ 
+						if(data == 'false') 
+						{
+							alert('Đặt hàng không thành công');
+						}else{
+							alert('Cảm ơn bạn đã đặt hàng, chúng tôi sẽ liên hệ trong thời gian sớm nhất!');
+						}
+					}
+				});
+				return false;
+			});
+		});
+		</script>
+
+
+
+
+
+
+	</div>
+</div>
+{% endif %}
+<!-- =========================== GOOGLE SHEET - END =========================== -->
+{% endif %}
+
+
+<div class="footer-landing">
+
+
+	<div class="container">
+		<div class="landing-footer">
+			{% if settings.footer-title %}
+			<div class="ten-cong-ty">
+				{{ settings.footer-title }}
+			</div>
+
+			<div class="line-ten-cong-ty">
+
+			</div>
+			{% endif %}
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="dich-vu-khach-hang heading-title">
+						DỊCH VỤ KHÁCH HÀNG
+					</div>
+					<ul class="list-dich-vu">
+						{% for link in linklists[settings.footer-menu-1].links %}
+						<li class="dich-vu-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
+						{% endfor %}
+					</ul>
+
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<div class="cac-bo-suu-tap heading-title">
+						CÁC BỘ SƯU TẬP
+					</div>
+					<ul class="list-dich-vu">
+						{% for link in linklists[settings.footer-menu-2].links %}
+						<li class="dich-vu-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
+						{% endfor %}
+					</ul>
+
+				</div>
+			</div>
+			<div class="line-dich-vu">
+
+			</div>
+			{% if settings.footer-diachi %}
+			<div class="dia-chi text-footer">
+				Địa chỉ: {{ settings.footer-diachi }}
+			</div>
+			{% endif %}
+			{% if settings.footer-masothue %}
+			<div class="ma-so-thue text-footer">
+				Mã số thuế: {{ settings.masothue }}
+			</div>
+			{% endif %}
+			<div class="row">
+				<div class="col-xs-12 col-sm-9">
+					<div class="hotline text-footer">
+						{% if settings.footer-hotline %}Hotline: {{ settings.hotline }}{% endif %}{% if settings.footer-email %} | Email: {{ settings.footer-email }}{% endif %}
+					</div>
+					{% if settings.footer-website %}
+					<div class="website text-footer">
+
+						Website: {{ settings.footer-website }}
+					</div>
+					{% endif %}
+					<div class="copyright text-footer">
+						© 2020 - Bản quyền của CÔNG TY TNHH CÔNG NGHỆ HARATOP - haratop.com
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-3">
+					<div class="ket-noi">
+						Kết nối với chúng tôi
+					</div>
+					<div class="social-icon">
+						{% if settings.footer-link-facebook %}
+						<a href="{{ settings.footer-link-facebook }}">
+							<span class="facebook"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"> <path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z"></path> </svg></span>
+						</a>
+						{% endif %}
+						{% if settings.footer-link-google %}
+						<a href="{{ settings.footer-link-google }}">
+							<span class="google"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"> <path d="M20,2A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4C2,2.89 2.9,2 4,2H20M20,12H18V10H17V12H15V13H17V15H18V13H20V12M9,11.29V13H11.86C11.71,13.71 11,15.14 9,15.14C7.29,15.14 5.93,13.71 5.93,12C5.93,10.29 7.29,8.86 9,8.86C10,8.86 10.64,9.29 11,9.64L12.36,8.36C11.5,7.5 10.36,7 9,7C6.21,7 4,9.21 4,12C4,14.79 6.21,17 9,17C11.86,17 13.79,15 13.79,12.14C13.79,11.79 13.79,11.57 13.71,11.29H9Z"></path> </svg></span>
+						</a>
+						{% endif %}
+						{% if settings.footer-link-youtube %}
+						<a href="{{ settings.footer-link-google }}">
+							<span class="youtube"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"> <path d="M10,16.5V7.5L16,12M20,4.4C19.4,4.2 15.7,4 12,4C8.3,4 4.6,4.19 4,4.38C2.44,4.9 2,8.4 2,12C2,15.59 2.44,19.1 4,19.61C4.6,19.81 8.3,20 12,20C15.7,20 19.4,19.81 20,19.61C21.56,19.1 22,15.59 22,12C22,8.4 21.56,4.91 20,4.4Z"></path> </svg></span>
+						</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+
+
+</div>
+<style>
+	{% for product in collections.san-pham-o-landing-page.products %}
+
+	{% for thumb in product.images %}
+	.owl-dots .owl-dot:nth-of-type({{forloop.index}}) span{
+	background: url({{ thumb.src }}) no-repeat center center/cover !important;
+	}
+
+	{% endfor %}
+	{% endfor %}
+</style>
+{% comment %}
+<form id="test-form" method="GET" action="https://script.google.com/macros/s/AKfycby2opiDVCguPe96yGCD8gRV453pBj7yNdzoSwYriftamUBYr9E/exec">
+	<input type="text" name="truong_so_1" placeholder="Trường số 1"/>
+	<input type="text" name="truong_so_2" placeholder="Trường số 2"/>
+	<input type="text" name="truong_so_3" placeholder="Trường số 3"/>
+	<button type="submit"id="submit-form">Gửi</button>
+</form>
+{% endcomment %}

@@ -1,0 +1,42 @@
+{% layout none %}
+{% paginate search.results by 100 %}
+<div class="collection-list fix-padding row">
+
+	{% if search.results.size > 0 %}
+	{% for product in search.results %}
+	{% for variant in product.variants %}
+	<div class="col-xs-6 col-sm-6 col-md-3">
+		
+		{%include 'product-loop'%}
+		
+	</div>
+	{%endfor%}
+	{%endfor%}
+	{%else%}
+	<p>
+		Chưa có sản phẩm nào trong nhóm.
+	</p>
+	{%endif%}
+</div>
+<div class="paginate clearfix">
+	{% if paginate.pages > 1 %}
+	<div id="pagination">
+		{% if paginate.previous %}
+		<a class="page-node" data-page="prev" href="javascript:void(0)">Trước</a>
+		{% endif %}
+
+		{%for part in paginate.parts%}
+		{%if part.is_link%}
+		<span class="page page-node" data-page="{{part.title}}">{{part.title}}</span>
+		{%else%}
+		<span class="page page-node {%if part.title == paginate.current_page%}current{%endif%}" data-page="{{part.title}}">{{part.title}}</span>
+		{%endif%}
+		{%endfor%}
+
+		{% if paginate.next %}
+		<a class="page-node" data-page="next" href="javascript:void(0)">Sau</a>
+		{% endif %}
+	</div>
+	{%endif%}
+</div>
+{% endpaginate %}

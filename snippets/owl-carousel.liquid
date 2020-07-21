@@ -1,0 +1,84 @@
+{{ 'slidervideo.js' | asset_url | script_tag }}
+<div id="main-slider" class="owl-carousel">
+	{% for i in (1..4) %}
+	{% capture show_slide %}ms_enable{{ i }}{% endcapture %}
+	{% capture use_video %}ms_video_enable{{ i }}{% endcapture %}
+	{% capture link %}ms_video_link{{ i }}{% endcapture %}
+	{% capture image %}ms_banner_img{{ i }}.jpg{% endcapture %}
+	{% capture image_xs %}ms_banner_img{{ i }}_xs.jpg{% endcapture %}
+	{% capture video %}ms_video_img{{ i }}.jpg{% endcapture %}
+	{% capture video_url %}ms_video_url{{ i }}{% endcapture %}
+	{%if settings[show_slide]%}
+	{%if settings[use_video]%}
+	<div class="item video" >
+		<div class="jarallax-video col-xs-12 no-padding unshow"
+				 style="background-color:#000"
+				 data-jarallax 
+				 data-jarallax-video="{{settings[video_url]}}"></div> 
+	</div>
+	{%else%}
+	<div class="item">
+		<div class="hidden-xs">
+			<a href="{{settings[link]}}">
+				<img src="{{image| asset_url}}" alt="index slider {{i}}"/>
+			</a>
+		</div>
+		<div class="visible-xs">
+			<a href="{{settings[link]}}">
+				<img src="{{image_xs | asset_url}}" alt="index slider {{i}}"/>
+			</a>
+		</div>
+	</div>
+	{%endif%}
+	{%endif%}
+	{%endfor%}
+</div>
+<script>
+$( document ).ready(function() {
+	var owl = $('#main-slider');
+	owl.owlCarousel({
+		loop:false,
+		margin:10,
+		nav:false,
+		dots:true,
+		items:1
+	})
+	owl.on('translate.owl.carousel',function(e){
+		$('.jarallax-video').jarallax({
+		}).addClass('show');
+	});
+	owl.on('translated.owl.carousel',function(e){
+		//$('.owl-item.active video').get(0).play();
+		$('.jarallax-video').jarallax({
+		}).addClass('show');
+	});
+
+	if(screen.width < 768){
+		var h = $('#main-slider .item img').outerHeight();
+		if(h == 0) h = 539;
+		$('#main-slider .owl-item .item .jarallax-video').css('height',h);
+	}
+
+	$(window).resize(function() {
+		if(screen.width < 768){
+			owl.on('translate.owl.carousel',function(e){
+				var h = $('#main-slider .item img').outerHeight();
+				if(h == 0) h = 539;
+				$('#main-slider .owl-item .item .jarallax-video').css('height',h);
+				$('.jarallax-video').jarallax({
+				}).addClass('show');
+			});
+			owl.on('translated.owl.carousel',function(e){
+				//$('.owl-item.active video').get(0).play();
+				var h = $('#main-slider .item img').outerHeight();
+				if(h == 0) h = 539;
+				$('#main-slider .owl-item .item .jarallax-video').css('height',h);
+				$('.jarallax-video').jarallax({
+				}).addClass('show');
+			});
+		}
+	});
+
+});
+
+</script>

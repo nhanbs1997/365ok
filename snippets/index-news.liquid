@@ -1,0 +1,17 @@
+{%if settings.index_news_show%}
+<div class="index-news">
+	<div class="container">
+		<h2 class="index-title"><a href="{{settings.index_news_link}}">{{settings.index_news_title}}</a></h2>
+		<div class="news-list owl-carousel">
+			{%for a in blogs[settings.index_news].articles limit: settings.index_news_num %}
+			<div class="item">
+				{%include 'news-item'%}
+			</div>
+			{%endfor%}
+		</div>
+		<div class="view-more">
+			<a href="{{settings.index_news_link}}">{{settings.index_news_title_btn | replace: '', ''}}</a>
+		</div>
+	</div>
+</div>
+{%endif%}

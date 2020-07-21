@@ -1,0 +1,61 @@
+{%- assign option_loop_sizes = product.options.size -%}
+{%- for i in (1..option_loop_sizes) -%}
+{%- capture option %}option{{ i }}{% endcapture -%}
+{%- assign values_loop = '' -%}
+{%- assign position = i | minus: 1 -%}
+{%- assign count = 0 -%}
+{%assign found_color = false%}
+{%if product.options[position].name contains 'Màu sắc'%}{%assign found_color = true%}
+{%endif%}
+{%assign found_size = false%}
+{%if product.options[position].name contains 'Kích thước'%}{%assign found_size = true%}
+{%endif%}
+{%if found_color%}
+<div class="product-loop-color variants-loop">
+
+	<div class="select-swap">
+		<ul class="list-color variants-list" id="list-color-{{product.id}}" data-option="op{{i}}">
+			{%- for variant in product.variants -%}
+			{%- assign value_loop = variant[option] -%}
+			{%- unless values_loop contains value_loop -%}
+			{%- assign values_loop = values_loop | join: ',' %}
+			{%- assign values_loop = values_loop | append: ',' | append: value_loop -%} 
+			{%- assign values_loop = values_loop | split: ',' -%} 
+			{%- assign count = count | plus:1 -%}
+
+			<li class="choise-color choise {%if count > 4 %}hide{%endif%} {% if variant_title == value_loop %}active selected{% endif %}" data-id="{{product.id}}" data-value="{{value_loop}}" data-value2="{{value_loop | replace:' ',''}}" data-inventory ="{{variant.inventory_quantity}}" data-img="{{variant.image.src | img_url: 'large'}}"><span class="{{value_loop |handle}} color-c" data-img="{{variant.image.src | img_url: 'large'}}"><img src="{{variant.image.src | img_url: 'large'}}"></span>
+				<span class="tooltip">{{value_loop}}</span>
+			</li>		
+
+			{%- endunless -%}
+			{%- endfor -%}
+			{%if count > 3 %}
+			<a href="{{ product.url }}"><li class="more-color">+{{ product.variants.size | minus: 4 }}</li></a>
+			{%endif%}
+		</ul>
+	</div>
+</div>
+{%endif%}
+{% comment %}
+{%if found_size%}
+<div class="product-loop-size variants-loop">
+	<div class="select-swap">
+		<label>Size</label>
+		<i class="fa fa-angle-down" aria-hidden="true"></i>
+		<ul class="list-size variants-list" id="list-size-{{product.id}}" data-option="op{{i}}">
+			{%- for variant in product.variants -%}
+			{%- assign value_loop = variant[option] -%}
+			{%- unless values_loop contains value_loop -%}
+			{%- assign values_loop = values_loop | join: ',' %}
+			{%- assign values_loop = values_loop | append: ',' | append: value_loop -%} 
+			{%- assign values_loop = values_loop | split: ',' -%} 
+			<li class="choise-size choise" data-id="{{product.id}}" data-value="{{value_loop}}" data-value2="{{value_loop | replace:' ',''}}" data-inventory ="{{variant.inventory_quantity}}">{{value_loop}}</li>		
+			{%- endunless -%}
+			{%- endfor -%}
+		</ul>
+	</div>
+</div>
+{%endif%}
+{% endcomment %}
+{%- endfor -%}
+

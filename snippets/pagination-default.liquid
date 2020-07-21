@@ -1,0 +1,19 @@
+{% if paginate.pages > 1 %}
+<div id="pagination">
+	{% if paginate.previous %}
+	<a class="page-node" href="{{ paginate.previous.url }}"><span>Trước</span></a>
+	{% endif %}
+
+	{%for part in paginate.parts%}
+	{%if part.is_link%}
+	<span class="page"><a class="page-node" href="{{part.url}}">{{part.title}}</a></span>
+	{%else%}
+	<span class="page page-node {%if part.title == paginate.current_page%}current{%endif%}">{{part.title}}</span>
+	{%endif%}
+	{%endfor%}
+
+	{% if paginate.next %}
+	<a class="page-node" href="{{ paginate.next.url }}"><span>Sau</span></a>
+	{% endif %}
+</div>
+{%endif%}

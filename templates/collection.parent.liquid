@@ -1,0 +1,82 @@
+{%assign find_link = ''%}
+{%assign find_link2 = ''%}
+{% assign link_parent = '' %}
+{% assign check_for = false %}
+{% for link1 in linklists[settings.menu_tab_1_link].links %}
+{% if link1.object.handle == collection.handle %}
+{% assign link_parent = link1.handle %}
+{% assign find_link2 = link1.handle%}
+{% assign check_for = true %}{% break %}
+{% endif %}
+
+{% for link2 in linklists[link1.handle].links %}
+{% if link2.object.handle == collection.handle %}
+{% assign link_parent = link2.handle %}
+{% assign find_link2 = link1.handle%}
+{% assign check_for = true %}{% break %}
+{% endif %}
+{% endfor %}
+{% if check_for == true %}{% break %}{% endif%}
+{% endfor %}
+{%assign find_link = link_parent%}
+<div id="collection" class="collection-shop">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12 ">
+				<ol class="breadcrumb breadcrumb-arrow">
+					<li><a href="/">Trang chủ</a></li>
+					{%if find_link2 != '' and find_link2 != find_link%}
+					<li><a href="/collections/{{find_link2}}" >{{collections[find_link2].title}}</a></li>
+					{%endif%}
+					<li class="active"><span>{{collection.title}}</span></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="mb30">
+			<div class="shop-title clearfix">
+				<h1>{{collection.title}}</h1>
+			</div>
+			{% if collection.description != nil %}
+			<div class="sub-des">{{collection.description}}</div>
+			{%endif%}
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-3 col-md-2 hidden-xs">
+				{%include 'shop-sidebar'%}
+			</div>
+			<div class="col-md-10 col-sm-9 col-xs-12">
+				{%if settings.shop_cate_show%}
+				<div class="collection-cate">
+					<ul class="lists-cate clearfix">
+						{%for link in linklists[find_link].links%}
+						<li>
+							<a href="{{link.url}}">
+								<div class="img" style="background: url({{link.object.image.src | img_url: 'medium'}}) no-repeat;background-size: cover;background-position: center;"></div>
+								<p class="title">{{link.title}}</p>
+								<span>{{link.object.products_count}} Products</span>
+							</a>
+						</li>
+						{%endfor%}
+					</ul>
+				</div>
+				{%endif%}
+				{%if settings.shop_product2_show%}
+				<div class="collection-block">
+					<div class="shop-title clearfix">
+						<h2><a href="/collections/{{settings.shop_product2}}">{{settings.shop_product2_title}}</a></h2>
+					</div>
+					<div class="collection-list fix-clear row">
+						{%for product in collections[settings.shop_product2].products limit: settings.shop_product2_num%}
+						<div class="col-xs-4 col-sm-4 col-md-3">
+							{%include 'product-loop'%}
+						</div>
+						{%endfor%}
+					</div>
+				</div>
+				{%endif%}
+			</div>
+		</div>
+	</div>
+</div>

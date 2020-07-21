@@ -1,0 +1,201 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7 oldie" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8 oldie" lang="en"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="vi">
+	<!--<![endif]-->
+	<head>
+		<link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}" type="image/png" />
+		<meta charset="utf-8" />
+		<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+		<title>
+			{% unless template contains 'collection' %}
+			{{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+			{% else %}
+			{{ collection.title | split: '.' | last }}
+			{% endunless %}
+		</title>
+		{% if page_description %}
+		<meta name="description" content="{{ page_description | strip_html | strip_newlines }}" />
+		{% endif %}
+		<meta content='width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=0' name='viewport' />
+		<link rel="canonical" href="{{ canonical_url }}" />
+		<meta name="robots" content="index,follow" />
+		<meta name="revisit-after" content="1 day" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="HandheldFriendly" content="true">
+		<link rel="dns-prefetch" href="{{ shop.url }}">
+		<link rel="dns-prefetch" href="//hstatic.net">
+		{{ content_for_header }}
+		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		{%include 'master-include'%}
+		<!-- Facebook Pixel Code -->
+		<script>
+		!function(f,b,e,v,n,t,s)
+		{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+			n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		 n.queue=[];t=b.createElement(e);t.async=!0;
+		 t.src=v;s=b.getElementsByTagName(e)[0];
+		 s.parentNode.insertBefore(t,s)}(window, document,'script',
+																		 'https://connect.facebook.net/en_US/fbevents.js');
+		fbq('init', '1163648983969977');
+		fbq('track', 'PageView');
+		</script>
+		{% comment %}
+		<noscript><img height="1" width="1" style="display:none !important"
+									 src="https://www.facebook.com/tr?id=1163648983969977&ev=PageView&noscript=1"
+									 /></noscript>
+		{% endcomment %}
+		<!-- End Facebook Pixel Code -->
+		<script>if (typeof(_sokShops) === "undefined") { _sokShops = {};}_sokShops.getNumber = function(val) { val = val.replace(/,/g, ""); var reg = /\d+(\.\d{1,2})?/; if (val.length && val.match(reg).length) { return parseFloat(val.match(reg)[0]); } else { return 0; }};{% if shop.customer_accounts_enabled %} {% if customer %} _sokShops.customer = { cust_name: "{{ customer.name }}", cust_email: "{{ customer.email }}", cust_location: "{{ customer.default_address.street }}", cust_city: "{{ customer.default_address.city }}", cust_locality: "{{ customer.default_address.zip }}", currency: "{{ shop.currency }}" }; {% endif %}{% endif %}{% if template contains "product" %} {% if product %} _sokShops.product = { lead_step: "viewproduct", product_names: "{{ product.title | replace "\"" , "" | replace "|",""}}", sku_id: "{{ product.first_available_variant.id }}", product_prices: _sokShops.getNumber("{{ product.price | money_without_currency }}"), currency: "{{ shop.currency }}", product_category: "{{ product.collections[0].title }}", brand: "{{ product.vendor }}", {% if product.featured_image %} product_imageurl: "https:{{ product.featured_image | product_img_url: 'master' }}", {% endif %}  };  {% endif %}{% endif %}{% if template contains "collection" %} {% if collection %} _sokShops.collection = {lead_step: "viewcategory",product_category: "{{ collection.title }}" }; {% endif %}{% endif %}{% if template contains "search" %} {% if search %} _sokShops.search = {lead_step: "search",search_querystring: "{{ search.terms }}" }; {% endif %}{% endif %}{% if cart %} _sokShops.cart = { {% if template contains "cart" %}lead_step: "funnel_checkout",{% if checkout %} delivery_method: "{{ checkout.shipping_method.title }}", payment_method: "{{ checkout.transactions[0].gateway }}", discount_details: "{{ checkout.discounts[0].code }}",{% endif %}sku_id: [ {% for line_item in cart.items %} "{{ line_item.product.first_available_variant.id }}",{% endfor %} ], {% if customer %} cust_location: "{{ customer.default_address.street }}", {% endif %} {% else %} product_imageurl: [{% for line_item in cart.items %} "https:{{ line_item.product.featured_image | product_img_url: 'master' }}",{% endfor %} ], sku_id: [{% for line_item in cart.items %} "{{ line_item.product.first_available_variant.id }}",{% endfor %} ], {% endif %} product_names: [{% for line_item in cart.items %} "{{ line_item.title | replace "\"" , "" | replace "|", "" }}",{% endfor %} ], sku_url: [{% for line_item in cart.items %} "{{ line_item.url }}",{% endfor %} ],product_prices: [{% for line_item in cart.items %} _sokShops.getNumber("{{ line_item.price | money_without_currency }}"),{% endfor %} ], product_quantities: [{% for line_item in cart.items %} {{ line_item.quantity }},{% endfor %} ], cart_amount: _sokShops.getNumber("{{ cart.total_price | money_without_currency }}"), currency: "{{ shop.currency }}" };{% endif %}</script>
+
+	</head>
+	<body {% if template contains 'landing1' %}class="landing-page"{% elsif template == 'product.landing' %}class="product-landing"{% endif %}>
+		{% comment %}
+		<div id="welcome-page" class="hide">
+			<img src="{{ 'logo.png'| asset_url }}" style="width: 30%">
+			<div class="maintenance-system text-center">
+				<b>Hệ thống đang được bảo trì</b><br>
+				Thành thật xin lỗi vì sự bất tiện này
+			</div>
+			<a href="https://www.facebook.com/noithat365ok/">
+				<button>
+					Fanpage
+				</button>
+			</a>
+		</div>
+		<div class="welcome-page-background">
+
+		</div>
+		<style>
+			#welcome-page{
+			position: fixed;
+			width: 100%;
+			height: 100vh;
+			background: #eeeeee;
+			z-index: 99999;
+			top: 0;
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -moz-flex;
+			display: -webkit-flex;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			}
+			#welcome-page button{
+			background-image: linear-gradient( to right, #eb3941, #f15e64, #e14e53, #e2373f );
+			box-shadow: 0 5px 15px rgba(242, 97, 103, 0.4);
+			width: 200px;
+			font-size: 16px;
+			font-weight: 600;
+			color: #fff;
+			cursor: pointer;
+			margin: 20px;
+			height: 55px;
+			text-align: center;
+			border: none;
+			background-size: 300% 100%;
+			border-radius: 50px;
+			moz-transition: all 0.4s ease-in-out;
+			-o-transition: all 0.4s ease-in-out;
+			-webkit-transition: all 0.4s ease-in-out;
+			transition: all 0.4s ease-in-out;
+			}
+			#welcome-page button:hover{
+			background-position: 100% 0;
+			moz-transition: all 0.4s ease-in-out;
+			-o-transition: all 0.4s ease-in-out;
+			-webkit-transition: all 0.4s ease-in-out;
+			transition: all 0.4s ease-in-out;
+			}
+			.welcome-page-background{
+			position: fixed;
+			width: 100%;
+			height: 100vh;
+			background: #fff;
+			z-index: 99998;
+			top: 0;
+			}
+		</style>
+		<script>
+		$(function(){
+			var origin = window.location.origin;
+			console.log(origin, origin.indexOf('365ok.vn'));
+			if(origin.indexOf('365ok.vn') > 0 ){
+				$('#welcome-page').removeClass('hide');
+			}else{
+				$('#welcome-page').addClass('hide');
+				$('.welcome-page-background').addClass('hide');
+			}
+		})
+		</script>
+		{% endcomment %}
+		{% assign flashsale_url = '' %}
+		{% assign flashsale_title = '' %}
+		{% for link in linklists[settings.header-menu].links %}
+		{% if link.title == 'New' %}
+		{% assign flashsale_url = link.object.url %}
+		{% assign flashsale_title = link.object.title %}
+		{% endif %}
+		{% endfor %}
+		<span class="link-sale hide">{{ flashsale_url }}?view=list-parent</span>
+		<div id="countdown-txt">
+			<i class="fa fa-close"></i>
+			<a href="{{ flashsale_url }}?view=list-parent">
+				<div class="txt">
+					<i class="ti-bolt"></i><span>{{ flashsale_title | split: '.' | last }}</span>
+				</div>
+				<div class="countdown">
+
+				</div>
+			</a>
+		</div>
+		<script>
+		$(function(){
+
+			if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				$('#countdown-txt a').attr('href', 'javascript:void(0)');
+				$('#countdown-txt .ti-bolt').on('click', function(){
+					$('#countdown-txt').toggleClass('active');
+					setTimeout(function(){ $('#countdown-txt a').attr('href', $('.link-sale').html()); }, 1000);
+				})
+				$('#countdown-txt .fa-close').on('click', function(){
+					$(this).parent().removeClass('active');
+					$('#countdown-txt a').attr('href', 'javascript:void(0)');
+				})
+			}else{
+				$('#countdown-txt .fa-close').on('click', function(){
+					$(this).parent().remove();
+				})
+			}
+		})
+		</script>
+		<div id="fb-root"></div>	
+		<script>
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.4&appId=925811304129812";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		</script>
+		{%include "header"%}
+		{{ content_for_layout }}
+		{%include "footer"%}
+		{%include 'search-popup'%}
+		{%include 'menu-mobile'%}
+		<div id="cart-ajax"></div>
+		<div class="modal fade hidden-xs" style="display: none;" id="quick-view-modal" tabindex="-1" role="dialog" aria-hidden="false"></div>
+	</body>
+</html>
+
+
+
+
+

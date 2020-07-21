@@ -1,0 +1,7 @@
+{% layout none %}
+{% paginate search.results by 1 %}
+{% for product in search.results %}
+<span class="variant-gia hide">{{ product.price }}</span>
+{%endfor%}
+{% endpaginate %}
+

@@ -1,0 +1,899 @@
+<script>
+$(function(){
+	$('ol.breadcrumb').each(function(){
+		if($(this).data('menu') == sessionStorage.getItem('menu')){
+			$(this).removeClass('hide');
+		}else{
+			$(this).addClass('hide');
+		}
+	})
+	if ("menu" in sessionStorage) {
+	} else {
+		$('ol.breadcrumb:last-of-type').removeClass('hide');
+	}
+})
+</script>
+<div id="sliderproduct-hide" class="hidden">
+	{% for thumb in product.images %}
+	<div class="item" data-alt="{{ thumb.alt | downcase }}">
+		<img  alt="{{product.title}}" src="{{ thumb.src | product_img_url : 'master' }}" data-image="{{ thumb.src | product_img_url : 'master' }}" >
+	</div>	
+	{% endfor %}
+</div>
+<div id="product">
+	<div class="container-fluid">
+		<div class=" clearfix">
+			<div class="col-md-12 {%if article%}blog-breadcrumb{%endif%}" >
+				<ol data-menu="all" class="breadcrumb breadcrumb-arrow hidden-sm hidden-xs">
+					<li><a href="/" target="_self">Trang chủ</a></li>
+					<li><a class="slice-breadcrumb" href="{{ product.collections.first.url }}" target="_self">{{ product.collections.first.title | split: '.' | last }}</a></li>
+					<li class="active"><span>{{  product.title }}</span></li>
+				</ol>
+				{% for collection in product.collections %}
+				{% assign a = collection.handle %}
+				{% for link1 in linklists.san-pham.links %}
+				{% for link2 in linklists[link1.handle].links %}
+				{% assign c = link2.object.handle %}
+				{% for link3 in linklists[link2.handle].links %}
+				{% assign b = link3.object.handle %}
+				{% if a == b %}
+				<ol data-menu="{{ link3.object.handle }}" class="breadcrumb breadcrumb-arrow hidden-sm hidden-xs">
+					<li><a href="/" target="_self">Trang chủ</a></li>
+					<li><a href="{{ link1.url }}" target="_self">{{ link1.title }}</a></li>
+					<li><a href="{{ link2.url }}" target="_self">{{ link2.title }}</a></li>
+					<li><a href="{{ link3.url }}" target="_self">{{ link3.title }}</a></li>
+					<li class="active"><span>{{  product.title }}</span></li>
+				</ol>
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				{% endfor %}
+				{% endfor %}
+			</div>
+		</div>
+		<div id="wrapper-detail">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<div id="surround" class="clearfix">
+						{%if product.images.size > 0%}
+						<div class="thumb-mt20 product-image-feature">
+							<div id="sliderproduct" class="owl-carousel owl-theme owl-btn-fix">
+								{% for thumb in product.images %}
+								<div class="item" data-alt="{{ thumb.alt | downcase }}">
+									<img data-index="{{ forloop.index0 }}" alt="{{product.title}}" src="{{ thumb.src | product_img_url : 'master' }}" data-image="{{ thumb.src | product_img_url : 'master' }}" >
+								</div>	
+								{% endfor %}
+							</div>
+
+						</div>
+						<div id="sliderproduct-pc" class="hidden-xs">
+							<ul class="slides" >
+								{% for thumb in product.images %}
+								<li class="product-thumb" data-alt="{{ thumb.alt | downcase }}" data-index="{{ forloop.index0 }}">
+									<a href="javascript:void(0)" data-image="{{ thumb.src | product_img_url : 'master' }}" data-zoom-image="{{ thumb.src | product_img_url : 'master' }}">
+										<img alt="{{product.title}}" data-image="{{ thumb.src | product_img_url : 'master' }}" src="{{ thumb.src | product_img_url : 'small' }}" >
+									</a>
+</li>	
+								{% endfor %}
+							</ul>
+						</div>
+						{%else%}
+						<img class="product-image-feature full-width" src="{{'img-default.png' | asset_url}}" width="100%"  alt="{{product.title}}"/>
+						{%endif%}
+					</div>
+					<!-- Product Collapse - Start -->
+					<div class="panel-group hidden-xs" id="product-collapse">
+						<!-- Mô tả - Start -->
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="collapse-title collapsed" data-toggle="collapse"  href="#product-description">
+									Mô tả sản phẩm<span><i class="fa fa-angle-down"></i></span>
+								</div>
+							</div>
+							<div id="product-description" class="unreset panel-collapse collapse in ">
+								<div class="product-description panel-collapse-content">
+									{% if product.description == blank %} 
+									<p>Chưa có mô tả cho sản phẩm này.</p>
+									{% else %}
+									{{ product.description | replace: '<hr />', '<hr>' | split: '<hr>' | first }}
+									{% endif %}
+								</div>
+								<div class="see-more text-center">
+									<button>
+										Xem Thêm Nội Dung
+									</button>
+								</div>
+							</div>
+
+						</div>
+						<!-- Mô tả - End -->
+						<!-- Thông tin chi tiết - Start -->
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="collapse-title collapsed" data-toggle="collapse"  href="#product-detail">
+									Đặc tính sản phẩm<span><i class="fa fa-angle-down"></i></span>
+								</div>
+							</div>
+							<div id="product-detail" class="panel-collapse collapse">
+								<div class="panel-collapse-content">
+									{% assign a = product.description | replace: '<hr />', '<hr>' %}
+									{% if a contains '<hr>' %} 
+									{{ product.description | replace: '<hr />', '<hr>' | split: '<hr>' | last }}
+									{% else %}
+									<p>Chưa có thông tin chi tiết cho sản phẩm này</p>
+									{% endif %}
+								</div>
+								<div class="see-more text-center">
+									<button>
+										Xem Thêm Nội Dung
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- Thông tin chi tiết - End -->
+						<!-- Q&A - Start -->
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="collapse-title collapsed" data-toggle="collapse"  href="#product-qa">
+									Q&A<span><i class="fa fa-angle-down"></i></span>
+								</div>
+							</div>
+							<div id="product-qa" class="panel-collapse collapse">
+								<div id="comment" class="product-description-wrapper">
+									<div class="fb-comments" data-href="{{shop.url | append: product.url}}" data-numposts="5" width="100%" data-colorscheme="light"></div>
+								</div>
+
+							</div>
+						</div>
+						<!-- Q&A - End -->
+						<!-- Product review - Start -->
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="collapse-title collapsed" data-toggle="collapse" href="#product-review">
+									Đánh giá<span><i class="fa fa-angle-down"></i></span>
+								</div>
+							</div>
+							<div id="product-review" class="panel-collapse collapse">
+								<div id="hrv-product-reviews" class="hrv-product-reviews" data-id="{{ product.id }}"> 
+									<div class="title-bl"> 
+										<h6>ĐÁNH GIÁ SẢN PHẨM</h6> 
+									</div>
+									<div id="hrv-product-reviews-sub" style="width:100%">
+										<div class="hrv-product-reviews-summary" id="hrv-product-reviews-summary">
+											{{ product.metafields.src.productreviews }} 
+										</div> 
+										<div class="hrv-product-reviews-list" id="hrv-product-reviews-list">
+											{{ product.metafields.src.reviewlist_0 }}
+											{{ product.metafields.src.reviewlist_1 }}
+											{{ product.metafields.src.reviewlist_2 }}
+											{{ product.metafields.src.reviewlist_3 }}
+											{{ product.metafields.src.reviewlist_4 }}
+											{{ product.metafields.src.reviewlist_5 }}
+											{{ product.metafields.src.reviewlist_6 }}
+											{{ product.metafields.src.reviewlist_7 }}
+											{{ product.metafields.src.reviewlist_8 }}
+											{{ product.metafields.src.reviewlist_9 }}        
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- Product view - End -->
+					</div> 
+					<!-- Product Collapse - End -->
+					<script>
+					$(function(){
+						// Kiểm tra nội dung lớn hơn 400px thì hiện nút seemore
+						$('.panel-collapse-content').each(function(){
+							if($(this).height() > 400){
+								$(this).next('.see-more').removeClass('hide');
+								$(this).css('height', '400px');
+							}else{
+								$(this).next('.see-more').addClass('hide')
+								$(this).css('height', 'auto');
+							}
+						})
+						$('.panel-heading').on('click', function(){
+							if($(this).next().height() > 400){
+								$(this).next().find('.see-more').removeClass('hide');
+								$(this).next().find('.panel-collapse-content').css('height', '400px');
+							}else{
+								$(this).next().find('.see-more').addClass('hide');
+								$(this).next().find('.panel-collapse-content').css('height', 'auto');
+							} 
+						})
+
+						$('.see-more button').on('click', function(){
+							$(this).parents('.panel-collapse').find('.panel-collapse-content').toggleClass('active');
+							if($(this).parents('.panel-collapse').find('.panel-collapse-content').hasClass('active')){
+								$(this).parents('.panel-collapse').find('.see-more button').html('Thu Gọn Nội Dung');
+							}else{
+								$(this).parents('.panel-collapse').find('.see-more button').html('Xem Thêm Nội Dung');
+								$([document.documentElement, document.body]).animate({
+									scrollTop: $(this).parents('.panel').offset().top - 100
+								}, 0);
+							}
+
+						})
+					})
+					</script>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-12 product-detail">
+					<div class="product-title" style="margin-bottom: 10px">
+						<h1>{{ product.title }}</h1>
+						<span class="hidden" id="pro_sku"></span>
+					</div>
+					<div class="vendor product-vendor">
+						Thương hiệu: {{ product.vendor }}
+					</div>
+					<div class="vendor product-type">
+						Nhà cung cấp: {{ product.type }}
+					</div>
+					<div class="vendor product-sku">
+						SKU: <span>{{ product.variants.first.sku }}</span> 
+					</div>
+					<div class="product-review" style="margin-top: 10px">
+						<div class="haravan-product-reviews-badge" data-id="{{ product.id }}"> {{ product.metafields.src.product_loop }} </div>
+					</div>
+					<div class="product-price clearfix" id="price-preview">
+						{% if product.variants.first.price == 0 %}<span>Liên hệ</span> 
+						{% else %}
+						<span data-price="{{ product.price }}">{{ product.price | money }}</span>
+						{% if product.compare_at_price > product.price %}<del>{{ product.compare_at_price | money }}</del>{% endif %}
+						{% endif %}
+					</div>
+{% for tag in product.tags %}
+					{% if tag contains 'tagkm_' %}
+							<div class="product-info__code km0">
+						<span class="product-info__code-icon ic-bef ic-misc-price"></span>
+						<span class="product-info__code-txt">
+							<span class="product-info__code-txt-1">{{ tag| replace:'tagkm_','' }}</span>
+						</span>
+					</div>
+					{% endif %}
+{% endfor %}
+{% if settings.product-km1_show %}
+					{% for tag in product.tags %}
+					{% if tag contains 'km1' %}
+					<div class="product-info__code">
+						<span class="product-info__code-icon ic-bef ic-misc-price"></span>
+						<span class="product-info__code-txt">
+							<span class="product-info__code-txt-1">{{ settings.product-km1-txt1 }}</span>
+						</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+	{% endif %}
+			{% if settings.product-km2_show %}
+			{% for tag in product.tags %}
+					{% if tag contains 'km2' %}
+					<div class="product-info__code">
+						<span class="product-info__code-icon ic-bef ic-misc-price"></span>
+						<span class="product-info__code-txt">
+				
+							<span class="product-info__code-txt-1">{{ settings.product-km2-txt1 }}</span>
+						
+							
+						</span>
+					</div>
+					{% endif %}
+					{% endfor %}
+						{% endif %}
+					{% assign hide_default_title = false %}
+					{% if product.variants.size == 1 and product.variants.first.title contains 'Default' and product.options.size == 1%}
+					{% assign hide_default_title = true %}
+					{% endif %}
+					<form id="add-item-form" action="/cart/add" method="post" class="variants clearfix">				
+						<div class="select clearfix">
+							{% assign check_default_title = true %}
+							{% for variant in product.variants %}
+							{% if variant.title == 'Default Title' %}
+							{% assign check_default_title = false %}
+							{% endif %}
+							{% endfor %}
+							{% if check_default_title %}
+							<select id="product-select" name="id" style="display: block !important">
+								{% for variant in product.variants %}
+								<option data-price="{{ variant.price | money }}" data-price-compare="{{ variant.compare_at_price | money }}" value="{{ variant.id }}" data-title="{{ variant.title | downcase }}" data-sku="{{ variant.sku }}">{{ variant.title }} - {{ variant.price | money }}</option>
+								{% endfor %}
+							</select>
+							{% endif %}
+						</div>
+						<div class="list-variant-image">
+							{% for variant in product.variants %}
+							<img data-image="{{ variant.image.src | product_img_url : 'master' }}" data-available="{{ variant.available }}" data-id="{{ variant.id }}" data-title-1="{{ variant.title }}" data-option-1-downcase="{{ variant.option1 | downcase }}" data-option-1="{{ variant.option1 }}" data-title="{{ variant.title | downcase }}" data-index="{{ forloop.index0 }}" class="variant-image {% if forloop.first %}first{% endif %}" src="{{ variant.image.src | product_img_url : 'small'}}">
+							{% endfor %}
+						</div>
+						<div class="form-action clearfix">
+							<div class="select-wrapper">
+								<label>Số lượng</label>
+								<div class="box_qty" data-price="{{item.price}}" data-id="{{item.id}}">
+									<button type="button" class="qty-minus">
+										<span class="icon__fallback-text" aria-hidden="true">−</span>
+									</button>
+									<input readonly type="text" name="quantity" min="0" id="quantity" value="1" class="tc item-quantity" />
+									<button type="button" class="qty-plus">
+										<span class="icon__fallback-text" aria-hidden="true">+</span>
+									</button>
+								</div>
+							</div>
+							<div class="button-action">
+								<button id="add-to-cart" {%unless product.available%}disabled{%endunless%}  class="{%unless product.available %}disabled{%endunless%}" name="add"> 
+									{% if  product.available %}	Thêm vào giỏ {% else %} Hết hàng {% endif %}
+								</button>
+
+							</div>
+
+
+
+						</div>
+					</form>
+					<!-- ===== Đặt hàng nhanh - Start ===== -->
+					<div class="order-fast-wrap">
+						<div class="order-fast" data-toggle="modal" data-target="#order-fast">Đặt hàng nhanh</div>
+					</div>
+
+					<div class="modal fade" id="order-fast" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form id="test-form" method="GET">
+									<input type="text" name="Tên" placeholder="Tên" action="https://script.google.com/macros/s/AKfycbw2iTt95XgyT4L5DeHx82xQi6mY-pNe2RU4wppph7o1Rc1S0LM/exec"/>
+									<input required pattern="[0-9]{10,12}" type="tel" name="Số điện thoại" placeholder="Số điện thoại"/>
+									<select name="Sản phẩm" form="test-form">
+										<option value="" hidden disabled selected>Chọn sản phẩm</option>
+										{% for variant in product.variants %}
+										<option value="{{ product.title }} - {{ variant.title }}">{{ product.title }} - {{ variant.title }}</option>
+										{% endfor %}
+									</select>
+									<input required pattern="[0-9]" type="number" name="Số lượng" placeholder="Số lượng"/>
+									<input type="submit" id="submit-form" value="Đặt hàng nhanh">
+								</form>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+							</div>
+
+						</div>
+					</div>
+					<script>
+					$(function(){
+						$('#order-fast').appendTo("body");
+
+						$("#test-form").submit(function(event){
+							var data = $('form#test-form').serialize();
+							$.ajax({
+								type : 'GET', 
+								url : 'https://script.google.com/macros/s/AKfycbw2iTt95XgyT4L5DeHx82xQi6mY-pNe2RU4wppph7o1Rc1S0LM/exec',
+								dataType:'json',
+								crossDomain : true,
+								data : data,
+								success : function(data){ 
+									alert('Cảm ơn bạn đã đặt hàng, chúng tôi sẽ liên hệ trong thời gian sớm nhất!');
+								}
+							});
+							return false;
+						});
+						$('#submit-form').on('click', function(){
+							alert('Cảm ơn bạn đã đặt hàng, chúng tôi sẽ liên hệ trong thời gian sớm nhất!');
+							$('#order-fast').modal('hide');
+						})
+					})
+					</script>
+					<!-- ===== Đặt hàng nhanh - End ===== -->
+					{%if settings.product_more_info_show%}
+					<div class="product-more-info">
+						<ul>
+							{%for i in (1..6)%}
+							{%capture text%}product_more_{{i}}_text{%endcapture%}
+							{%unless settings[text] == ""%}
+							<li><i class="fa fa-check-square-o"></i>{{settings[text] | strip_html}}</li>
+							{%endunless%}
+							{%endfor%}				
+						</ul>
+					</div>
+					{%endif%}
+
+				</div>
+			</div>
+		</div>
+	</div>
+	{% comment %}
+	<div class="product-full-des visible-xs">
+		{% assign tabs = product.metafields.hrvptabs.tabs %} 
+		<div class="border">
+			<p class="visible-xs tab-title-xs">
+				Thông tin sản phẩm
+			</p>
+			<ul class="tab-title clearfix">
+				<li><a class="active" href="#mota">Thông tin sản phẩm</a></li>
+				{% if tabs %} 
+				{% assign tabList = tabs | append: '' | split: '@@###@@' %} 
+				{%for tab in tabList%}
+				{% assign title = tab | split: '@@##@@' | first %} 
+				<li><a href="#tab{{forloop.index}}">{{title}}</a></li>
+				{%endfor%}
+				{%endif%}
+				<li><a href="#comment">Q&amp;A</a></li>
+				<li><a href="#review">Đánh giá</a></li>
+			</ul>
+		</div>
+		<div class="container-1200">
+			<div class="tab-content">
+				<div id="mota" class="product-description-wrapper active">
+					{%if product.description == blank%} 
+					<p>Chưa có thông tin mô tả cho sản phẩm này.</p>
+					{%else%}
+					{{ product.description }}
+					{%endif%}
+				</div>
+				{% if tabs %} 
+				{%for tab in tabList%}
+				{% assign content = tab | split: '@@##@@' | last %} 
+				<div id="tab{{forloop.index}}" class="product-description-wrapper">
+					{{content}}
+				</div>
+				{%endfor%}
+				{%endif%}
+				<div id="comment" class="product-description-wrapper">
+					<div class="fb-comments" data-href="{{shop.url | append: product.url}}" data-numposts="5" width="100%" data-colorscheme="light"></div>
+				</div>
+				<div id="review" class="product-description-wrapper">
+					<div id="hrv-product-reviews" class="hrv-product-reviews" data-id="{{ product.id }}"> 
+						<div class="main-title">
+							<h2 class="large-title">{{settings.product_review_title}}</h2>
+						</div>
+						<div id="hrv-product-reviews-sub" style="width:100%">
+							<div class="hrv-product-reviews-summary" id="hrv-product-reviews-summary">
+								{{ product.metafields.src.productreviews }} 
+							</div> 
+							<div class="hrv-product-reviews-list" id="hrv-product-reviews-list">
+								{{ product.metafields.src.reviewlist_0 }}
+								{{ product.metafields.src.reviewlist_1 }}
+								{{ product.metafields.src.reviewlist_2 }}
+								{{ product.metafields.src.reviewlist_3 }}
+								{{ product.metafields.src.reviewlist_4 }}
+								{{ product.metafields.src.reviewlist_5 }}
+								{{ product.metafields.src.reviewlist_6 }}
+								{{ product.metafields.src.reviewlist_7 }}
+								{{ product.metafields.src.reviewlist_8 }}
+								{{ product.metafields.src.reviewlist_9 }}        
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endcomment %}
+	<!-- Product Collapse - Start -->
+	<div class="panel-group visible-xs" id="product-collapse" style="padding:10px">
+		<!-- Mô tả - Start -->
+		<div class="panel">
+			<div class="panel-heading">
+				<div class="collapse-title collapsed" data-toggle="collapse"  href="#product-description1">
+					Mô tả sản phẩm<span><i class="fa fa-angle-down"></i></span>
+				</div>
+			</div>
+			<div id="product-description1" class="panel-collapse collapse in ">
+				<div class="product-description panel-collapse-content">
+					{% if product.description == blank %} 
+					<p>Chưa có mô tả cho sản phẩm này.</p>
+					{% else %}
+					{{ product.description | replace: '<hr />', '<hr>' | split: '<hr>' | first }}
+					{% endif %}
+				</div>
+				<div class="see-more text-center">
+					<button>
+						Xem Thêm Nội Dung
+					</button>
+				</div>
+			</div>
+
+		</div>
+		<!-- Mô tả - End -->
+		<!-- Thông tin chi tiết - Start -->
+		<div class="panel">
+			<div class="panel-heading">
+				<div class="collapse-title collapsed" data-toggle="collapse"  href="#product-detail1">
+					Đặc tính sản phẩm<span><i class="fa fa-angle-down"></i></span>
+				</div>
+			</div>
+			<div id="product-detail1" class="panel-collapse collapse">
+				<div class="panel-collapse-content">
+					{% assign a = product.description | replace: '<hr />', '<hr>' %}
+					{% if a contains '<hr>' %} 
+					{{ product.description | replace: '<hr />', '<hr>' | split: '<hr>' | last }}
+					{% else %}
+					<p>Chưa có thông tin chi tiết cho sản phẩm này</p>
+					{% endif %}
+				</div>
+				<div class="see-more text-center">
+					<button>
+						Xem Thêm Nội Dung
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- Thông tin chi tiết - End -->
+		<!-- Q&A - Start -->
+		<div class="panel">
+			<div class="panel-heading">
+				<div class="collapse-title collapsed" data-toggle="collapse"  href="#product-qa1">
+					Q&A<span><i class="fa fa-angle-down"></i></span>
+				</div>
+			</div>
+			<div id="product-qa1" class="panel-collapse collapse">
+				<div id="comment" class="product-description-wrapper">
+					<div class="fb-comments" data-href="{{shop.url | append: product.url}}" data-numposts="5" width="100%" data-colorscheme="light"></div>
+				</div>
+
+			</div>
+		</div>
+		<!-- Q&A - End -->
+		<!-- Product review - Start -->
+		<div class="panel">
+			<div class="panel-heading">
+				<div class="collapse-title collapsed" data-toggle="collapse" href="#product-review1">
+					Đánh giá<span><i class="fa fa-angle-down"></i></span>
+				</div>
+			</div>
+			<div id="product-review1" class="panel-collapse collapse">
+				<div id="hrv-product-reviews" class="hrv-product-reviews" data-id="{{ product.id }}"> 
+					<div class="title-bl"> 
+						<h6>ĐÁNH GIÁ SẢN PHẨM</h6> 
+					</div>
+					<div id="hrv-product-reviews-sub" style="width:100%">
+						<div class="hrv-product-reviews-summary" id="hrv-product-reviews-summary">
+							{{ product.metafields.src.productreviews }} 
+						</div> 
+						<div class="hrv-product-reviews-list" id="hrv-product-reviews-list">
+							{{ product.metafields.src.reviewlist_0 }}
+							{{ product.metafields.src.reviewlist_1 }}
+							{{ product.metafields.src.reviewlist_2 }}
+							{{ product.metafields.src.reviewlist_3 }}
+							{{ product.metafields.src.reviewlist_4 }}
+							{{ product.metafields.src.reviewlist_5 }}
+							{{ product.metafields.src.reviewlist_6 }}
+							{{ product.metafields.src.reviewlist_7 }}
+							{{ product.metafields.src.reviewlist_8 }}
+							{{ product.metafields.src.reviewlist_9 }}        
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- Product view - End -->
+	</div> 
+	<!-- Product Collapse - End -->
+	{%include 'product-related'%}
+	{%include 'product-related-2'%}
+	{%include 'product-related-3'%}
+	{%include 'product-related-4'%}
+</div>
+<script>
+$(document).ready(function(){
+	$('.product-full-des .tab-title li a').click(function(e){
+		e.preventDefault();
+		$('.product-full-des .tab-title li a').removeClass('active');
+		$(this).addClass('active');
+		var text = $(this).html();
+		$('.tab-title-xs').html(text).removeClass('active');
+		var url = $(this).attr('href');
+		$('.product-full-des .tab-content .product-description-wrapper').removeClass('active');
+		$('.product-full-des .tab-content ' + url).addClass('active');
+	});
+	$('.tab-title-xs').click(function(){
+		$(this).toggleClass('active');
+	});
+
+	$('a[data-spy=scroll]').click(function(){
+		event.preventDefault() ;
+		$('body').animate({scrollTop: ($($(this).attr('href')).offset().top - 20) + 'px'}, 500);
+	});
+
+	$('#add-to-cart').click(function(e){	
+		e.preventDefault();
+		var params = {
+			type: 'POST',
+			url: '/cart/add.js',
+			async : false,
+			data: jQuery('#add-item-form').serialize(),
+			dataType: 'json',
+			success: function(line_item) {
+				$('body').animate({scrollTop: 0}, 500);
+				$.getJSON('/cart.js', function(data){
+					$('.cart-header-count').html(data.item_count);
+					var s = Haravan.formatMoney(data.total_price, "{{ shop.money_format }}");
+					s = s.replace('₫','');
+					$('.cart-info .cart-price').html('VNĐ ' + s);
+				})
+				$.ajax({
+					url : '/cart?view=ajax',
+					success: function(data){
+						$('body').addClass('cart-open');
+						$('#cart-ajax').addClass('active').html(data);
+					}
+				});
+			},
+			error: function(XMLHttpRequest, textStatus) {
+				Haravan.onError(XMLHttpRequest, textStatus);
+			}
+		};
+		jQuery.ajax(params);
+	});
+	/*$(".product-thumb img").click(function(){
+		$(".product-thumb").removeClass('active');
+		$(this).parents('li').addClass('active');
+		$(".product-image-feature").attr("src",$(this).attr("data-image"));
+		$(".product-image-feature").attr("data-zoom-image",$(this).attr("data-zoom-image"));
+	});
+
+	$(".product-thumb").first().addClass('active');*/
+});
+
+var selectCallback = function(variant, selector) {
+	if (variant && variant.available) {
+		if(variant.featured_image != null)
+		{
+			$(".product-thumb").removeClass('active');
+			$(".product-thumb img[data-image='"+Haravan.resizeImage(variant.featured_image.src,'master')+"']").click().parents('li').addClass('active');
+		}
+		if (variant.sku != null ){
+			jQuery('#pro_sku').html('SKU: ' +variant.sku);
+		}
+		jQuery('#add-to-cart, #fixed-add-to-cart').removeAttr('disabled').removeClass('disabled').html("Thêm vào giỏ");;
+		//jQuery('#check-out-now, #fixed-check-out-now').removeAttr('disabled').removeClass('disabled').show();
+
+		if(variant.price < variant.compare_at_price){
+			jQuery('#price-preview').html("<span>" + Haravan.formatMoney(variant.price, "{{ shop.money_format }}") + "</span><del>" + Haravan.formatMoney(variant.compare_at_price, "{{ shop.money_format }}") + "</del>");
+			var pro_sold = variant.price ;
+			var pro_comp = variant.compare_at_price / 100;
+			var sale = 100 - (pro_sold / pro_comp) ;
+			var kq_sale = Math.round(sale);
+			//jQuery('#surround .product-sale span').html("<label class='sale-lb'>Sale</label> "+kq_sale + '%');
+		}else if(variant.price == 0){
+			jQuery('#price-preview').html("<span>Liên hệ</span>");
+		} else {
+			jQuery('#price-preview').html("<span>" + Haravan.formatMoney(variant.price, "{{ shop.money_format }}" + "</span>"));
+		}
+		//jQuery('#price-preview').append('<p class="availabel"><i class="fa fa-check-square-o"></i>Còn hàng</p>');
+	} else {
+		jQuery('#add-to-cart, #fixed-add-to-cart').addClass('disabled').attr('disabled', 'disabled').html("Hết hàng");
+		//jQuery('#check-out-now, #fixed-check-out-now').addClass('disabled').attr('disabled', 'disabled').hide();
+		//jQuery('#price-preview').html('<span>Hết hàng</span>');
+	}
+};
+
+jQuery(document).ready(function($){
+	{%if product.variants.size == 1 and product.variants.first.title contains 'Default'%}
+	{%else%}
+	new Haravan.OptionSelectors("product-select", { product: {{ product | json }}, onVariantSelected: selectCallback });
+
+	 // Add label if only one product option and it isn't 'Title'.
+	 {% if product.options.size == 1 and product.options.first != 'Tiêu đề' %}
+	 $('.selector-wrapper:eq(0)').prepend('<label>{{ product.options.first }}</label>');
+		{% endif %} 
+
+		// Auto-select first available variant on page load.
+		{% assign found_one_in_stock = false %}
+		{% for variant in product.variants %}
+		{% if variant.available and found_one_in_stock == false %}
+		{% assign found_one_in_stock = true %}
+		{% for option in product.options %}
+		$('.single-option-selector:eq({{ forloop.index0 }})').val({{ variant.options[forloop.index0] | json }}).trigger('change');
+		 {% endfor %}
+
+		 {% endif %}
+		 {% endfor %}
+		 $('.selector-wrapper select').each(function(){
+			 $(this).wrap( '<span class="custom-dropdown custom-dropdown--white"></span>');
+			 $(this).addClass("custom-dropdown__select custom-dropdown__select--white");
+		 });
+			{%endif%}
+
+			});
+
+			</script>
+
+{% if product.images.size > 0 %}
+<script>
+$(document).ready(function(){
+
+	/*if($(window).width() > 960){
+		jQuery(".product-image-feature").elevateZoom({
+			gallery:'sliderproduct-pc',
+			scrollZoom : true
+		});
+	}*/
+
+	if($("#sliderproduct-pc").length > 0 ) {
+		if($(window).width() >= 768 ){
+			$("#sliderproduct-pc").mThumbnailScroller({
+				axis:"y",
+				type:"click-thumb",
+				theme:"buttons-out",
+				type:"hover-precise",
+				contentTouchScroll: true
+			});
+			$('#sliderproduct-pc ul li').click(function(){
+				var index = $(this).index();
+				$('#sliderproduct').trigger('to.owl.carousel', [index,300]);
+				$(this).addClass('active').siblings().removeClass('active');
+			});
+		}
+	}
+});
+</script>
+{% endif %}
+
+<script>
+$(document).ready(function(){
+	var temp='{{ product.handle }}', sto="", arr="", count = 0, flag= true;
+	if(sessionStorage.getItem('dataview') != null){
+		sto = sessionStorage.getItem('dataview');
+		arr = sto.split('_');
+		for(i = 0; i< arr.length ; i++){
+			if(arr[i] == temp){
+				flag= false;
+				break;
+			}
+		}
+		if(flag && count <= 6){
+			sto = temp + '_'+ sto;
+			sessionStorage.setItem('dataview',sto);
+			count = count + 1;
+		}
+	}else{
+		sessionStorage.setItem('dataview',temp);
+	}
+});
+</script>
+<script>
+$(function(){
+	$('#product-select').css('display', 'block !important')
+	var a = '', src = '';
+	$('.list-variant-image .variant-image').on('click', function(){
+		$(this).addClass('active').siblings().removeClass('active');
+		$('#product-select').val($(this).data('id'));
+		/* Đổi product data */
+		$('.product-sku span').html($('#product-select option:selected').data('sku'));
+		$('.product-price span').html($('#product-select option:selected').data('price'));
+		$('.product-price del').html($('#product-select option:selected').data('price-compare'));
+		$('#product-select-option-0').val($(this).data('option-1'));
+		/* Available */
+		if($(this).data('available') == false){
+			$('#add-to-cart').html('Hết hàng').attr('disabled', 'disabled')
+		}else{
+			$('#add-to-cart').html('Thêm vào giỏ').prop("disabled", false);
+		}
+		a = $(this).data('option-1-downcase');
+		src = $(this).attr('src');
+		var image = $(this).data('image');
+		console.log(image);
+
+		$('.product-thumb').each(function(){
+			if(a == $(this).data('alt')){
+				$(this).removeClass('hide').addClass('active');
+			}else{
+				$(this).addClass('hide').removeClass('active');
+			}
+			if(src == $(this).find('img').attr('src')){
+				/* Đổi product image */
+				$('#sliderproduct').trigger('to.owl.carousel', [$(this).data('index'),300]);
+			}
+		})
+		//if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		$('#sliderproduct').owlCarousel('destroy');
+		var list = '';
+		$('#sliderproduct-hide .item').each(function(index){
+			if(a == $(this).data('alt')){
+				list += '<div class="item">'+$(this).html()+'</div>'
+				$('#sliderproduct').html(list);
+			}else{
+				list += '';
+				$('#sliderproduct').html(list);
+			}
+		})
+
+
+		if($("#sliderproduct").length > 0 ) {
+			$('#sliderproduct').owlCarousel({
+				loop:false,
+				margin:10,
+				nav:false,
+				dots:false,
+				//items:1,
+				navText:['<i class="fa fa-angle-left fa-4x"></i>','<i class="fa fa-angle-right fa-4x"></i>'],
+				responsive:{
+					0:{
+						items:1,
+						dots:true
+					},
+					400:{
+						items:1,
+						dots:true
+					},
+					768:{
+						items:1,
+						dots:false,
+					}
+				}
+			});
+		}
+		//}@@
+	})
+
+
+	$('.selector-wrapper label').each(function(){
+
+		if($(this).html().trim() == 'Màu sắc' || $(this).html().trim() == 'Kiểu dáng'){
+			$('#product-select-option-0').on('change', function(){
+				var a = this.value;
+				$('.list-variant-image .variant-image').each(function(){
+					if($(this).data('option-1') == a){
+						$(this).trigger('click');
+					}
+				})
+			})
+
+			$('.list-variant-image').removeClass('hide');
+
+			if($(this).next().find('select option').length == 1){
+				$('.list-variant-image').addClass('hide');
+			}
+		}
+	})
+
+	var seen = {};
+	$('.list-variant-image .variant-image').each(function() {
+		var txt = $(this).attr('src');
+		if (seen[txt])
+			$(this).remove();
+		else
+			seen[txt] = true;
+	});
+	if($('.list-variant-image .variant-image').length == 1){
+		$('.list-variant-image').remove();
+	}
+	var pathname = decodeURIComponent(window.location.href);
+	console.log(pathname);
+	$('.list-variant-image .variant-image').each(function(){
+		if($(this).data('title') == 'default title'){
+			$(this).parent().addClass('hide');
+			$('#add-item-form').css('margin-top', '0');
+			$('#add-item-form .select').addClass('hide');
+		}
+		if(pathname.indexOf($(this).data('option-1-downcase')) > 0){
+			$(this)[0].click();				
+		}
+
+	})
+
+
+	$('.list-like .product-items img').each(function(){
+		$(this).height($(this).outerWidth())
+	})
+	$('.list-like .list-color').each(function(){
+		if($(this).children().length < 2){
+			$(this).remove()
+		}
+	})
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		$(window).scroll(function() {
+			if ($(this).scrollTop() > 700) {
+				$('.order-fast').appendTo("body").addClass('fixed');
+				$('#add-to-cart').appendTo("body").addClass('fixed');
+			} else {
+				$('.order-fast').appendTo(".order-fast-wrap").removeClass('fixed');
+				$('#add-to-cart').appendTo(".button-action").removeClass('fixed');
+			}
+
+
+
+		})
+	}
+
+})
+</script>
+

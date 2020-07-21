@@ -1,0 +1,104 @@
+<div id="menu-mobile">
+	<div class="menu-container">
+		<div class="top">
+			<a href="/"><img src="{{'logo.png' | asset_url}}" alt="{{shop.name}}" /></a>
+			<div class="menu-close ic-bef ic-site-cross"></div>
+		</div>
+		<div class="bottom">
+			<div class="menu-tab-content">
+				<div class="mobile-search">
+					<form class="form-search" action="/search">
+						<input type="hidden" name="type" value="product">
+						<input type="text" name="q" class="search-input" placeholder="Tìm kiếm..." value="">
+						<button type="submit" class="btn-search hide">
+							<i class="fa fa-search"></i>
+						</button>
+					</form>
+				</div>
+				<p class="title-menu text-center hidden"><i class="fa fa-bars"></i>Menu</p>
+				{%if settings.menu_tab_1_show%}
+				<ul class="main-menu-xs">
+					{%for link in linklists[settings.header-menu].links %}
+					{%if linklists[link.handle].links.size > 0%}
+					<li class="menu-level-1-mobile has-child">
+						<a href="{{link.url | append: '?view=list-parent'}}" class="has-child" {% if link.title == 'New' or link.title == 'Mới' %}data-time="{{ settings.countdown }}" id="countdown-mobile"{% endif %}>{% if link.title == 'New' or link.title == 'Mới' %}{{ link.object.title | split: '.' | last }}{% else %}{{ link.title }}{% endif %}<i class="ic-bef ic-site-plus"></i></a>
+						<ul class="sub menu-level-2-mobile-wrap">
+							{% if link.title == 'New' or link.title == 'Mới' %}
+							<li class="anh-level-2">
+								<a href="{{ link.url }}">
+									<span>New Arrivals</span>
+								</a>
+							</li>
+							{% endif %}
+							{%for l in linklists[link.handle].links %}
+							{%if linklists[l.handle].links.size > 0%}
+							<li class="menu-level-2-mobile" data-product="{{ l.object.products_count }}">
+								<a href="{{l.url | append: '?view=list' }}" class="has-child">{{l.title}}<i class="ic-bef ic-site-plus"></i></a>
+								<ul class="sub menu-level-3-mobile-wrap">
+									{%for ll in linklists[l.handle].links %}
+									<li class="menu-level-3-mobile" data-product="{{ ll.object.products_count }}"><a href="{{ll.url}}">{{ll.title}}</a></li>
+									{%endfor%}
+								</ul>
+							</li>
+							{%else%}
+							<li class="menu-level-2-mobile" data-product="{{ l.object.products_count }}"><a href="{{l.url}}">{{l.title}}</a></li>
+							{%endif%}
+							{%endfor%}
+
+						</ul>
+					</li>
+					{%else%}
+					<li class="menu-level-1-mobile no-child" data-product="{{ link.object.products_count }}"><a href="{{link.url}}">{{link.title}}</a></li>
+					{%endif%}
+					{%endfor%}
+				</ul>
+				{%endif%}
+				{%if settings.footer_socials_show%}
+				<ul class="footer-icon">
+					{%if settings.facebook%}
+					<li><a href="{{settings.facebook_link}}" class="fb" target="_blank" rel="nofollow"><i class="fa fa-facebook"></i></a></li>
+					{%endif%}
+					{%if settings.google%}
+					<li><a href="{{settings.google_link}}" class="gg" target="_blank" rel="nofollow"><i class="fa fa-google-plus"></i></a></li>
+					{%endif%}
+					{%if settings.youtube%}
+					<li><a href="{{settings.youtube_link}}" class="yt" target="_blank" rel="nofollow"><i class="fa fa-youtube"></i></a></li>
+					{%endif%}
+<li><a href="/account" class="yt" target="_blank" rel="nofollow"><i class="fa fa-user"></i></a></li>
+				
+				</ul>
+				{%endif%}
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('.menu-level-1-mobile.no-child').each(function(){
+		if($(this).data('product') == 0){
+			$(this).remove();
+		}
+	})
+	$('.menu-level-2-mobile').each(function(){
+		if($(this).data('product') == 0){
+			$(this).remove();
+		}
+	})
+	$('.menu-level-2-mobile-wrap').each(function(){
+		if($(this).children().length == 0){
+			$(this).parents('.menu-level-1-mobile').remove();
+		}
+	})
+	$('.menu-level-3-mobile').each(function(){
+		if($(this).data('product') == 0){
+			$(this).remove();
+
+		}
+	})
+	$('.menu-level-3-mobile-wrap').each(function(){
+		if($(this).children().length == 0){
+			$(this).parents('.menu-level-2-mobile').remove();
+		}
+	})
+})
+</script>

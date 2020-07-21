@@ -1,0 +1,177 @@
+{%if settings.shop_sidebar_menu_show%}
+<div class="sidebar-menu">
+	<h3 class="title">{{settings.shop_sidebar_menu_title}}</h3>
+	<ul class="menu-list">
+		{%for link in linklists[find_link2].links %}
+		{%if linklists[link.handle].links.size > 0 and link.handle == find_link%}
+		<li>
+			<a class="has-child {%if link.active %}active{%endif%}" href="{{link.url}}">{{link.title}}</a>
+			<ul class="sub">
+				{%for l in linklists[link.handle].links %}
+				<li><a class="" href="{{l.url}}">{{l.title}}</a></li>
+				{%endfor%}
+			</ul>
+		</li>
+		{%else%}
+		<li><a class="{%if link.active %}active{%endif%}" href="{{link.url}}">{{link.title}}</a></li>
+		{%endif%}
+		{%endfor%}
+	</ul>
+</div>
+{%endif%}
+{%if settings.sidebar_price_show%}
+<div class="sidebar-price">
+	<h3 class="title">{{settings.sidebar_price_title}}</h3>
+	<div class="filter-list price-choise">
+		<input type="text" id="slider-range" data-price="" name="example_name" value="" />
+		<p class="price-text">
+			Price: <span>VND {{settings.sidebar_price_min}} - VND {{settings.sidebar_price_max}}</span>
+		</p>
+		<a href="javascript:void(0)" class="filter-price-btn">Lọc</a>
+	</div>
+</div>
+{%endif%}
+<script>
+$(document).ready(function(){
+	var $range = $(".js-range-slider"),
+			$result = $(".js-result"),
+			$getvalues = $(".js-get-values"),
+			from = 0,
+			to = 0;
+	var saveResult = function (data) {
+		from = data.fromNumber;
+		to = data.toNumber;
+		var url = "((price:product>="+data.from+")&&(price:product<="+data.to+"))";
+		var text = $('.irs .irs-from').html() + " - " + $('.irs .irs-to').html();
+		$('.price-text span').html(text);
+		$("#slider-range").val(url);
+		//Stringfilter();
+	};
+
+	$("#slider-range").ionRangeSlider({
+		type: "double",
+		min: {{settings.sidebar_price_min}},
+																		max: {{settings.sidebar_price_max}},
+																		from: {{settings.sidebar_price_min}},
+																		to: {{settings.sidebar_price_max}},
+																		prefix: "VND ",
+																		onChange: saveResult,
+																		onFinish: saveResult
+																		});
+
+	$('.filter-price-btn').click(function(e){
+		e.preventDefault();
+		Stringfilter();
+	});
+
+	var str = "";
+	var Stringfilter = function(){
+		var q="", gia="",size="",color="",type="",tag="", total_page=0, cur_page=1;		
+		{%if collection.handle == 'all'%}
+		q="filter=(collectionid:product>=0)";
+		 {%else%}
+		 q="filter=(collectionid:product={{collection.id}})";
+			{%endif%}
+			/*$('ul.price-choise li.check a').each(function(){
+				gia = gia + $(this).data('price') + '||';
+			})*/
+			gia = $('#slider-range').val();
+			 if(gia == '0;1000000'){
+				 gia = '';
+			 }
+
+			 /*$('ul.color-choise li.check a').each(function(){
+				color = color + $(this).data('filter') + '||';
+			})
+			$('ul.size-choise li.check a').each(function(){
+				size = size + $(this).data('filter') + '||';
+			})
+			$('ul.type-choise li.check a').each(function(){
+				type = type + $(this).data('filter') + '||';
+			})
+			$('ul.tag-choise li.check a').each(function(){
+				tag = tag + $(this).data('filter') + '||';
+			})*/
+			 //gia=gia.substring(0,gia.length -2);
+			 if(gia != ""){
+				 gia='&&'+gia;
+				 q+=gia;
+			 }
+			 /*color=color.substring(0,color.length -2);
+			 if(color != ""){
+				 color='&&('+color+')';
+				 q+=color;
+			 }
+			 size=size.substring(0,size.length -2);
+			 if(size != ""){
+				 size='&&('+size+')';
+				 q+=size;
+			 }
+			 type=type.substring(0,type.length -2);
+			 if(type != ""){
+				 type='&&('+type+')';
+				 q+=type;
+			 }
+			 tag=tag.substring(0,tag.length -2);
+			 if(tag != ""){
+				 tag='&&('+tag+')';
+				 q+=tag;
+			 }*/
+			 console.log(q);
+			 q = encodeURIComponent(q);
+			 str = q;
+			 $.ajax({ // lấy tổng số trang của kết quả filter
+				 url: "/search?q="+q+"&view=page",	
+				 async: false,
+				 success:function(data){
+					 total_page = parseInt(data);
+				 }
+			 })
+			 if(cur_page <= total_page){
+				 $(".paginate").show();
+				 $.ajax({
+					 url : "/search?q="+q+"&view=filter",
+					 success: function(data){
+						 $(".collection-list").html(data);
+					 }
+				 })
+				 $.ajax({  // đoạn code 
+					 url: "/search?q="+q+"&view=paginate",
+					 async: false,
+					 success:function(data){
+						 $(".paginate").html(data); // in phân trang
+					 }
+				 })
+			 }else{
+				 $(".paginate").hide();
+				 $(".collection-list").html("<div class='col-sm-12 text-center'>Không có sản phẩm phù hợp với điều kiện.</div>");
+			 }
+
+			}
+			$('.paginate').on("click","a",function(){ // bắt sự kiện click các nút phân trang
+				var link = $(this).attr("data-link");
+				if(link == 'm'){
+					link = cur_page - 1;
+				}
+				if(link == 'p'){
+					link = cur_page + 1;
+				}
+				link = parseInt(link);
+				$.ajax({
+					url : "/search?q="+str+"&view=filter&page="+link, 
+					success: function(data){
+						$(".collection-list").html(data);
+						cur_page = link;
+					}
+				})
+				$.ajax({ 
+					url: "/search?q="+str+"&view=paginate&page="+link,	
+					success:function(data){
+						$(".paginate").html(data);
+					}
+				})
+			})
+
+
+		 });
+		 </script>

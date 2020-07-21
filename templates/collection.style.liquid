@@ -1,0 +1,24 @@
+{% layout none %}
+{% paginate collection.products by 1000 %}
+{% for product in collection.products %}
+{% for option in product.options %}
+{% if option == 'Kiểu dáng' %}
+{% assign index = forloop.index0 %}
+{% assign stylelist = '' %}
+{% assign style = '' %}
+{% for variant in product.variants %}
+{% capture style %}
+{{ variant.options[index] }}
+{% endcapture %}
+{% unless stylelist contains style %}
+<li class="ajax" data-variant-title="{{ style | split: ' - ' | first | strip_html }}" data-filter="(variant:product={{ style | strip_html }})">{{ style | downcase | capitalize | split: ' - ' | first }}</li>
+{% capture tempList %}
+{{ stylelist | append: style | append: " " }}
+{% endcapture %}
+{% assign stylelist = tempList %}
+{% endunless %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endpaginate %}

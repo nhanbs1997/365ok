@@ -1,0 +1,95 @@
+{% comment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% endif %}
+<div class="product-items">
+	<div class="img-top {%if product.images.size > 1%}img-effect{%endif%}">
+		{%if on_sale %}<span class="sale-label">{{product.variants.first.compare_at_price | minus: product.variants.first.price | divided_by:product.variants.first.compare_at_price | times : 100 | round : 0}}% off</span>{%endif%}
+		<a href="{{product.url}}">
+			<img class="img_default" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
+			{%if product.images.size > 1%}
+			<img class="img_hover" src="{{ product.images[1] | product_img_url: 'large' }}" alt="{{product.title}}">
+			{%endif%}
+		</a>
+	</div>
+	<div class="info-body">
+		<h3 class="info-title"><a href="{{product.url}}">{{product.title}}</a></h3>
+		<div class="product-sku">
+			{{ product.variants.first.sku }}
+		</div>
+		<p class="info-price">
+			<span class="new-price">{{product.price | money}}</span>
+			{%if on_sale %}
+
+			<del class="old-price">{{product.compare_at_price | money}}</del>
+			{%endif%}
+		</p>
+		{%include 'variants-loop'%}
+		<div class="buy-fast hide">
+			<a href="{{product.url}}" data-id="{{product.variants.first.id}}">
+				<i class="fa fa-shopping-cart"></i>
+				<span>Mua hàng</span>
+			</a>
+		</div>
+	</div>
+</div>
+{% endcomment %}
+
+{% assign on_sale = false %}
+{% if variant.compare_at_price > variant.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if variant.available %}
+{% assign sold_out = false %}
+{% endif %}
+{% assign variant_title = variant.title %}
+<div class="product-items product-items-{{ variant.title | handleize }}" option="{{ option }}" data-variant-option-1="{{ variant.option1 }}" data-variant-option-2="{{ variant.option2 }}" data-variant-option-3="{{ variant.option3 }}">
+	<div class="img-top {%if variant.images.size > 1%}img-effect{%endif%}">
+		{%if on_sale %}<span class="sale-label">{{variant.compare_at_price | minus: variant.price | divided_by: variant.compare_at_price | times : 100 | round : 0}}% off</span>{%endif%}
+		<a href="{{product.url}}?{{ variant.option1 | downcase }}">
+			{% if variant.image.src %}
+			<img class="img_default" src="{{ variant.image.src | img_url: 'large' }}" alt="{{variant.title}}">
+			{% if product.images.size > 1 %}
+			{% assign a = forloop.index0 | plus: 1 %}
+			{% if a ==  forloop.length %}
+			{% assign a = forloop.length | minus: forloop.length %}
+			{% endif %}
+			<img class="img_hover" src="{{ variant.image.src | img_url: 'large' }}" alt="{{variant.title}}">
+			{% endif %}
+			{% else %}
+			<img class="img_default" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
+			
+			<img class="img_hover" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
+		
+			{% endif %}
+		</a>
+	</div>
+	<div class="info-body">
+		<h3 class="info-title"><a href="{{product.url}}?{{ variant.option1 | downcase }}">{{ product.title }}{% unless variant.title == 'Default Title' %} - {{variant.title}}{% endunless %}</a></h3>
+		<div class="product-sku">
+			{{ variant.sku }}
+		</div>
+		<p class="info-price">
+			<span class="new-price">{% if variant.price == 0 %}Liên hệ{% else %}{{variant.price | money}}{% endif %}</span>
+			{%if on_sale %}
+
+			<del class="old-price">{{variant.compare_at_price | money}}</del>
+			{%endif%}
+		</p>
+		{%include 'variants-loop'%}
+		<div class="buy-fast hide">
+			<a href="{{product.url}}" data-id="{{variant.id}}">
+				<i class="fa fa-shopping-cart"></i>
+				<span>Mua hàng</span>
+			</a>
+		</div>
+	</div>
+</div>

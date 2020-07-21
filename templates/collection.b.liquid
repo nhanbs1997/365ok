@@ -1,0 +1,7 @@
+{% layout none %}
+{% paginate collection.products by 1000 %}
+{% assign a = 100 | times: paginate.current_page %}
+{% for product in collection.products %}
+<li>{{ product.title }}</li>
+{% endfor %}
+{% endpaginate %}

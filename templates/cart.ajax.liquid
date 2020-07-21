@@ -1,0 +1,129 @@
+{%layout none%}
+{% comment %}
+<div class="cart-container">
+	<div class="cart-close">
+		<i class="ico ico-close-search" ></i>
+	</div>
+	{% if cart.item_count == 0 %}
+	<div class="text-center mt20">
+		Không có sản phẩm nào trong giỏ hàng!
+	</div>
+	{% else %}
+	<form action="/cart" method="post" id="cartformpage">
+		<div class="cart-list">
+			{% for item in cart.items %}
+			<div class="cart-item clearfix">
+				<div class="image">
+					<a href="{{ item.url }}?view=vi">
+						<img src="{% if item.variant.image.src == '//hstatic.net/0/0/global/noDefaultImage6.gif' %}true{% else %}{{ item.variant.image.src | img_url: 'small' }}{% endif %}" />
+					</a>
+				</div>
+				<div class="item-info">
+					<a class="title" href="{{ item.url }}?view=vi">
+						{{ item.product.title }}
+					</a>
+					{% if item.product.variants.size > 1 %}
+					<p class="variant_title">{{ item.variant.title }}</p>
+					{% endif %}
+					{% comment %}
+					<p class="quan">
+						Số lượng: {{ item.quantity }}
+					</p>
+					{% endcomment %}
+					<div class="qty">
+						<input type="number" name="updates[]" min="1" id="updates_{{ item.id }}" value="{{ item.quantity }}" class="tc item-quantity" />
+					</div>
+					<span class="price">{{ item.line_price | money }}</span>
+					<span class="delete-item" onclick="deleteCart1({{ forloop.index }})">Xoá</span>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="cart-buttons">
+			<div class="cart-info">
+				<span class="title">Tổng cộng: </span>
+				<span class="total">{{ cart.total_price | money }}</span>
+			</div>
+			<p class="ship">
+				Vận chuyển và thuế được tính khi thanh toán.
+			</p>
+			<div class="buttons clearfix">
+				<button type="submit" id="checkout" name="checkout" value="" >Thanh toán</button>
+				<button class="update-cart-ajax">Cập nhật</button>
+			</div>
+		</div>
+	</form>
+	{% endif %}
+</div>
+{% endcomment %}
+
+<div class="cart-container">
+	<div class="cart-close">
+		<i class="ico ico-close-search" ></i>
+	</div>
+	{% if cart.item_count == 0 %}
+	<div class="text-center mt20">
+		Không có sản phẩm nào trong giỏ hàng!
+	</div>
+	{% else %}
+	<form action="/cart" method="post" id="cartformpage">
+		<div class="cart-list">
+			{% for item in cart.items %}
+{% assign a = item.variant.image.src | img_url: 'small' %}
+{% assign check_image = false %}
+{% if a contains 'noDefaultImage' %}
+{% assign check_image = true %}
+{% endif %}
+			<div class="cart-item clearfix" data-variant-id="{{ item.id }}">
+				<div class="image">
+					<a href="{{ item.url }}">
+
+						<img src="{% if check_image %}{{ item | img_url: 'small' }}{% else %}{{ item.variant.image.src | img_url: 'small' }}{% endif %}" />
+					</a>
+				</div>
+				<div class="item-info" style="position: relative">
+					<a class="title" href="{{ item.url }}">
+						{{ item.title }}
+					</a>
+					{% if item.product.variants.size > 1 %}
+					<p class="variant_title">{{ item.variant.title }}</p>
+					{% endif %}
+					<div class="box_qty" data-price="{{item.price}}" data-id="{{item.id}}">
+						<button type="button" class="qty-minus">
+							<span class="icon__fallback-text" aria-hidden="true">−</span>
+						</button>
+						<input readonly type="text" name="updates[]" min="0" id="updates_{{ item.id }}" value="{{ item.quantity }}" class="tc item-quantity" />
+						<button type="button" class="qty-plus">
+							<span class="icon__fallback-text" aria-hidden="true">+</span>
+						</button>
+					</div>
+					<div class="remove" style="position: absolute; top: 5px; right: 5px">
+						<a onclick="deleteCart1({{ forloop.index }})" class="remove-item">
+							<i style="font-size: 20px" class="fa fa-trash-o"></i>
+						</a>
+					</div>
+					<span class="price">{{ item.line_price | money }}</span>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="cart-buttons">
+			<div class="cart-info">
+				<span class="title">Tổng cộng: </span>
+				<span class="total">{{ cart.total_price | money }}</span>
+			</div>
+			<p class="ship">
+				Vận chuyển và thuế được tính khi thanh toán.
+			</p>
+			<div class="continue-shopping buttons" style="padding-bottom: 5px">
+				<button><a style="color: #fff" href="/collections/all">Tiếp tục mua hàng</a></button>
+			</div>
+			<div class="buttons clearfix">
+				<button type="submit" id="checkout" name="checkout" value="" >Thanh toán</button>
+			</div>
+		</div>
+	</form>
+	{% endif %}
+</div>
+
+

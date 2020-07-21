@@ -1,0 +1,256 @@
+
+<header id="header" class="visible-xs">
+	<div class="header-bar">
+		<div class="container-fluid clearfix">
+			<ul class="top-bar">
+				<li><a href="mailto:{{ settings.header-email }}" class="ic-bef ic-socl-email">{{ settings.header-email }}</a></li>
+				<li><a href="tel:{{ settings.header-phone | replace: ' ', '' }}" class="ic-bef ic-socl-phone">+{{ settings.header-phone }}</a></li>
+			</ul>
+			{% comment %}
+			<ul class="pull-right">
+				<li><a href="#" class="ic-bef ic-misc-variety">Over 3,000 designs</a></li>
+				<li><a href="#" class="ic-bef ic-misc-ship ic-ship-free">Free delivery & assembly</a></li>
+				<li><a href="#" class="ic-bef ic-misc-price">GST absorbed</a></li>
+			</ul>
+			{% endcomment %}
+		</div>
+
+	</div>
+	<div class="header-bottom">
+		<div class="container-fluid">
+			<div class="menu-hamburger c-nav__menu__hamburger-btn ic-bef ic-site-categories ic-bold js-nav__menu__hamburger-on-btn">
+			</div>
+			{%if template contains 'index'%}
+			<h1 class="logo">
+				<a href="/"><img src="{{'logo.png' | asset_url}}" alt="{{shop.name}}" /></a>
+			</h1>
+			{%else%}
+			<div class="logo">
+				<a href="/"><img src="{{'logo.png' | asset_url}}" alt="{{shop.name}}" /></a>
+			</div>
+			{%endif%}
+			{%if settings.menu_tab_1_show%}
+			<ul class="main-menu hidden-1024" >
+				{%for link in linklists[settings.menu_tab_1_link].links %}
+				{%if linklists[link.handle].links.size > 0%}
+				<li class="has-child {%if link.active %}active{%endif%}">
+					<a href="{{link.url}}">{{link.title}}</a>	
+					{%if link.url contains 'lighting'%}
+					<div class="sub">
+						<ul class="col clearfix">
+							{%for l in linklists[link.handle].links %}
+							<li><a href="{{l.url}}">
+								<div class="img" style="background: url({{l.object.image.src | img_url: 'medium'}}) no-repeat;background-size: cover;background-position: center;"></div>
+								<span>{{l.title}}</span>
+								</a>
+							</li>
+							{%endfor%}
+						</ul>
+					</div>
+					{%else%}		
+					<div class="sub">
+						<div class="clearfix">
+							<ul class="ul-left">
+								{%for l in linklists[link.handle].links %}
+								{%if linklists[link.handle].links.size > 0%}
+								<li>
+									<a href="{{l.url}}">{{l.title}}</a>
+									<ul class="sub-lv3">
+										{%for ll in linklists[l.handle].links %}
+										<li><a href="{{ll.url}}">{{ll.title}}</a></li>
+										{%endfor%}
+									</ul>
+								</li>
+								{%else%}
+								<li><a href="{{l.url}}">{{l.title}}</a></li>
+								{%endif%}
+								{%endfor%}
+							</ul>
+							<div class="img-right">
+								<a href="{{link.object.products.first.url}}">
+									<div class="img" style="background: url({{link.object.products.first.featured_image.src | img_url: 'medium'}}) no-repeat;background-size: cover;background-position: center;"></div>
+									<span>{{link.object.products.first.title}}</span>
+									<p class="price">{{link.object.products.first.price | money}}</p>
+								</a>
+							</div>
+						</div>
+
+					</div>
+					{%endif%}
+				</li>
+				{%else%}
+				<li class="{%if link.active %}active{%endif%}"><a href="{{link.url}}">{{link.title}}</a></li>
+				{%endif%}
+				{%endfor%}
+			</ul>
+			{%endif%}
+			<div class="show-search hidden-1024">
+				<form class="form-search topsearch" action="/search">
+					<input type="hidden" name="type" value="product">
+					<input type="text" name="q" class="search-input" placeholder="Tìm kiếm" value="">
+					<button type="submit" class="btn-search ic-bef ic-site-search">
+					</button>
+				</form>
+			</div>
+			<ul class="icon-header">
+				<li class="text"><a href="#" class="hidden-xs">Business</a></li>
+				<li class="text"><a href="#" class="hidden-xs">Inspirations</a></li>
+				<li class="icon hide"><a href="/account" class="ic-bef ic-site-user"></a></li>
+				<li class="icon cart"><a href="/cart" class="clearfix ic-bef ic-site-cartnum"></a></li>
+			</ul>
+		</div>
+	</div>
+	<form class="form-search" action="/search">
+		<span class="c-search__icon ic-bef ic-site-search ic-bold js-search__icon-mobile"></span>
+		<input type="hidden" name="type" value="product">
+		<input type="text" name="q" class="search-input" placeholder="Tìm kiếm..." value="">
+		<button type="submit" class="btn-search hide">
+			<i class="fa fa-search"></i>
+		</button>
+	</form>
+</header>
+
+<header class="hidden-xs">
+	<div class="visible-xs menu-mobile">
+		<div class="close-menu-mobile">
+
+		</div>
+	</div>
+	<div class="logo-search-icon container-fluild">
+		<div class="row logo-search-icon-row">
+			<img class="visible-xs open-menu-mobile" src="{{ 'menu.svg' | asset_url }}" alt="Menu hamburger" width="25">
+			<div class="logo col-xs-12 col-sm-4 col-md-3">
+				<a href="/"><img src="{{ 'logo.png' | asset_url }}"></a>
+			</div>
+			<div class="search col-xs-12 col-sm-4 col-md-6">
+				<form class="form-search topsearch" action="/search">
+					<input type="hidden" name="type" value="product">
+					<div class="search-input">
+						<input type="text" name="q" class="input" placeholder="Tìm kiếm..." value="">
+						<button type="submit" class="btn-search ic-bef ic-site-search ic-bold"></button>
+					</div>
+				</form>
+			</div>
+			<div class="icon col-xs-12 col-sm-4 col-md-3">
+				{% if settings.header-idea %}
+				<a href="{{ settings.header-idea-link }}" class="idea">{{ settings.header-idea }}</a>
+				<span class="line"></span>
+				{% endif %}
+				{% if settings.header-email %}
+				<a href="mailto:{{ settings.header-email }}" data-toggle="tooltip" data-placement="bottom" title="{{ settings.header-email }}" class="icon-email ic-bef ic-bold ic-socl-email icon-child"></a>
+				{% endif %}
+				{% if settings.header-phone %}
+				<a href="tel:+84{{ settings.header-phone | replace: ' ', '' }}" data-toggle="tooltip" data-placement="bottom" title="+84 1900 636019" class="icon-phone ic-bef ic-bold ic-socl-phone icon-child"></a>
+				{% endif %}
+				<a href="/account/login" class="icon-account ic-bef ic-bold ic-site-user icon-child"></a>
+				<span class="icon-cart ic-bef ic-site-cartnum ic-bold icon-child"></span>
+				<script>
+				$(function(){
+					$('[data-toggle="tooltip"]').tooltip()
+				})
+				</script>
+			</div>
+		</div>
+		<div class="menu">
+			<ul class="menu-level-1-wrap">
+				{% for link in linklists[settings.header-menu].links %}
+				{% if linklists[link.handle].links == empty %}
+				<li class="menu-level-1 no-child" data-product="{{ link.object.products_count }}"><a class="menu-level-1-a" href="{{ link.url }}" {% if link.title == 'New' or link.title == 'Mới' %}style="color:red"{% endif %}>{{ link.title }}</a></li>
+				{% else %}
+				<li class="menu-level-1 has-child" data-product="{{ link.object.products_count }}">
+					<a class="menu-level-1-a" href="{{ link.url | append: '?view=list-parent' }}" {% if link.title == 'New' or link.title == 'Mới' %}style="color:red" data-time="{{ settings.countdown }}" id="countdown"{% endif %}>{% if link.title == 'New' or link.title == 'Mới' %}{{ link.object.title | split: '.' | last }}{% else %}{{ link.title }}{% endif %}</a>
+					<div class="menu-child-wrap">
+						<ul class="menu-level-2-wrap">
+							{% if link.title == 'New' or link.title == 'Mới' %}
+							<li class="anh-level-2">
+								<a href="{{ link.url }}">
+
+									<img src="{{ collections[link.object.handle].image }}">
+									<span>New Arrivals</span>
+								</a>
+							</li>
+							{% endif %}
+							{% for link2 in linklists[link.handle].links %}
+							{% if linklists[link2.handle].links != empty %}
+							<li class="menu-level-2" data-product="{{ link2.object.products_count }}" {% for link3 in linklists[link2.handle].links %}{% if forloop.last %}style="order:{{ forloop.length }}"{% endif %}{% endfor %}>
+								<a class="menu-level-2-a" href="{{ link2.url | append: '?view=list' }}">{{ link2.title }}</a>
+								<ul class="menu-level-3-wrap">
+									{% for link3 in linklists[link2.handle].links %}
+									<li class="menu-level-3" data-product="{{ link3.object.products_count }}"><a class="menu-level-3-a" href="{{ link3.url }}">{{ link3.title }}</a></li>
+									{% endfor %}
+								</ul>
+							</li>
+							{% else %}
+							<li class="menu-level-2" data-product="{{ link2.object.products_count }}"><a class="menu-level-2-a" href="{{ link2.url }}">{{ link2.title }}</a></li>
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="overlay"></div>
+</header>
+<script>
+$(function(){
+	$('.menu-level-1').each(function(){
+		if($(this).data('product') == 0){
+			$(this).remove();
+		}
+	})
+	$('.menu-level-2').each(function(){
+		if($(this).data('product') == 0){
+			$(this).remove();
+		}
+	})
+	$('.menu-level-2-wrap').each(function(){
+		if($(this).children().length == 0){
+			$(this).parents('.menu-child-wrap').remove();
+		}
+	})
+	$('.menu-level-3').each(function(){
+		if($(this).data('product') == 0){
+			$(this).remove();
+
+		}
+	})
+	$('.menu-level-3-wrap').each(function(){
+		if($(this).children().length == 0){
+			$(this).parents('.menu-level-2').remove();
+		}
+		$(this).parents('.menu-level-2').css('order', $(this).children().length);
+	})
+	$('.menu-level-1.has-child').hover(function(){
+		$('.overlay').css('opacity', '1')
+		if($(this).find('.menu-level-2-wrap').length == 0){
+			$('.overlay').css('opacity', '0')
+		}
+	}, function(){
+		$('.overlay').css('opacity', '0')
+	})
+	$(window).scroll(function (event) {
+		var scroll = $(window).scrollTop();
+		if(scroll > $('header').height()){
+			$('header').addClass('fixed');
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
+			}
+		}else{
+			$('header').removeClass('fixed');
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
+
+			}
+		}
+	});
+	$('.open-menu-mobile').on('click', function(){
+		$('.menu-mobile').addClass('active');
+	})
+
+	
+
+})
+</script>

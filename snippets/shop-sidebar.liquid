@@ -1,0 +1,24 @@
+{%if settings.shop_sidebar_menu_show%}
+<div class="sidebar-menu">
+	<h3 class="title">{{settings.shop_sidebar_menu_title}}</h3>
+	<ul class="menu-list">
+		{%for link in linklists[find_link2].links %}
+		{%if linklists[link.handle].links.size > 0 and link.handle == find_link%}
+		<li>
+			<a class="has-child {%if link.active %}active{%endif%}" href="{{link.url}}">{{link.title}}</a>
+			<ul class="sub">
+				{%for l in linklists[link.handle].links %}
+				<li><a class="" href="{{l.url}}">{{l.title}}</a></li>
+				{%endfor%}
+			</ul>
+		</li>
+		{%else%}
+		<li><a class="{%if link.active %}active{%endif%}" href="{{link.url}}">{{link.title}}</a></li>
+		{%endif%}
+		{%endfor%}
+	</ul>
+</div>
+{%endif%}
+
+
+

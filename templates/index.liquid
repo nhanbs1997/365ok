@@ -1,0 +1,299 @@
+
+{% if settings.index-banner-show %}
+<div id="owl-banner" class="owl-carousel owl-theme">
+	<!--{% if settings.index-banner-1-show %}
+<a href="{{ settings.index-banner-1-link }}"><img src="{{ '1234.jpg' | asset_url }}"></a>
+{% endif %}-->
+	{% if settings.index-banner-2-show %}
+	<a href="{{ settings.index-banner-2-link }}"><img src="{{ 'index-banner-2.jpg' | asset_url }}"></a>
+	{% endif %}
+	{% if settings.index-banner-3-show %}
+	<a href="{{ settings.index-banner-3-link }}"><img src="{{ 'index-banner-3.jpg' | asset_url }}"></a>
+	{% endif %}
+</div>
+<script>
+$(function(){
+	$('#owl-banner').owlCarousel({
+		loop:true,
+		dots: true,
+		nav:true,
+		items: 1,
+		autoHeight:true,
+		navText: ["<i class='fa fa-angle-left'>","<i class='fa fa-angle-right'>"],
+		responsive:{
+			0:{
+				items:1
+			},
+			600:{
+				items:2,
+				nav:false
+			},
+			1000:{
+				items:1,
+				nav:true,
+				loop:false
+			}
+		}
+	})
+
+})
+</script>
+{% endif %}
+{%if settings.index_slider_show%}
+<div id="owl-slider-banner" class="owl-carousel">
+	{%for i in (1..5)%}
+	{%capture show%}silder_banner_{{i}}_show{%endcapture%}
+	{%capture link%}silder_banner_{{i}}_link{%endcapture%}
+	{%capture title%}silder_banner_{{i}}_title{%endcapture%}
+	{%capture img%}silder_banner_{{i}}.jpg{%endcapture%}
+	{%if settings[show]%}
+	<div class="item">
+		<a href="{{settings[link]}}">
+			<img alt="{{settings[title]}}" src="{{img | asset_url}}" />
+		</a>
+	</div>
+	{%endif%}
+	{%endfor%}
+</div>
+{%endif%}
+{%include 'index-cate'%}
+{%include 'index-by-room'%}
+<!-- Nhóm sản phẩm gợi ý - START -->
+{% if settings.collection-product-recommend-show %}
+<section id="collection-product-recommend">
+	<div class="container">
+		<h3 class="index-title text-center">
+			{{ settings.collection-product-recommend-title }}
+		</h3>
+		<div id="owl-collection-product-recommend" class="owl-carousel owl-theme">
+			{% for product in collections[settings.collection-product-recommend-collection].products %}
+			<div class="product-item">
+				<a href="{{ product.url }}">
+					<img class="product-recommend__photo" src="{{ product.featured_image | img_url: 'medium' }}">
+					<div class="product-title product-recommend__title">
+						{{ product.title }}
+					</div>
+					<div class="product-price">
+						<span class="product-price-real">{% if product.price == 0 %}Liên hệ{% else %}{{ product.price | money }}{% endif %}</span>
+						{% if product.compare_at_price > product.price %}
+						<span class="product-price-compare">{{ product.compare_at_price | money }}</span>
+						{% endif %}
+					</div>
+					<div class="product-delivery hide">
+						<i class="ic-bef ic-misc-ship ic-ship-free"></i>
+						<span>FREE Delivery</span>
+					</div>
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>
+<script>
+$(function(){
+	$('#owl-collection-product-recommend').owlCarousel({
+		margin: 14,
+		nav: true,
+		dots: false,
+		navText: ["<i class='fa fa-angle-left'>","<i class='fa fa-angle-right'>"],
+		navClass: ['owlcarousel__prev', 'owlcarousel__next'],
+		responsive:{
+			0:{
+				items: 1
+			},
+			600:{
+				items: 3
+			},
+			1000:{
+				items: 6
+			}
+		}
+	})
+	// Get height max cho ảnh
+	$('.product-recommend__photo').height($('.product-recommend__photo').width());
+})
+</script>
+{% endif %}
+<!--  Nhóm sản phẩm gợi ý  - END -->
+<!-- Khách hàng đánh giá - START -->
+{% if settings.customer-review-show %}
+<section id="customer-review">
+	<div class="container">
+		<div id="owl-customer-review" class="owl-carousel owl-theme">
+			{% for i in (1..6) %}
+			{% capture customer_review_i_show %}customer-review-{{i}}-show{% endcapture %}
+			{% capture customer_review_i_star %}customer-review-{{i}}-star{% endcapture %}
+			{% capture customer_review_i_title %}customer-review-{{i}}-title{% endcapture %}
+			{% capture customer_review_i_content %}customer-review-{{i}}-content{% endcapture %}
+			{% capture customer_review_i_name %}customer-review-{{i}}-name{% endcapture %}
+			{% capture customre_review_i_day %}customer-review-{{i}}-day{% endcapture %}
+			{% if settings[customer_review_i_show] %}
+			<div class="customer-review-item">
+				<div class="rating">
+
+					{% for i in (1..settings[customer_review_i_star]) %}
+					<span class="ic-aft ic-bef ic-site-star ic-solid ic-star-full"></span>
+					{% endfor %}
+
+
+
+				</div>
+				<div class="review-title">
+					{{ settings[customer_review_i_title] }}
+				</div>
+				<div class="review-description">
+					{{ settings[customer_review_i_content] }}
+				</div>
+				<hr>
+				<div class="review-who">
+					<span class="ic-bef ic-site-tick">{{ settings[customer_review_i_name] }}</span>
+					<span class="review-name-day">
+						<span class="review-name">{{ settings[customer_review_i_name] }}</span>
+						<span class="review-day">{{ settings[customer_review_i_day] }}</span>
+					</span>
+
+				</div>
+			</div>
+			{% endif %}
+			{% endfor %}
+
+		</div>
+	</div>
+</section>
+<script>
+$(function(){
+	$('#owl-customer-review').owlCarousel({
+		margin: 20,
+		nav: true,
+		dots: false,
+		navText: ["<i class='fa fa-angle-left'>","<i class='fa fa-angle-right'>"],
+		navClass: ['owlcarousel__prev', 'owlcarousel__next'],
+		responsive:{
+			0:{
+				items:1
+			},
+			600:{
+				items:3
+			},
+			1000:{
+				items:5
+			}
+		}
+
+	})
+	$('.review-who .ic-bef').each(function(){
+		$(this).text($(this).text().charAt(0));
+	})
+})
+</script>
+{% endif %}
+<!--  Khách hàng đánh giá  - END -->
+<!-- Sản phẩm đã xem -->
+<div class="index-viewed">
+	<div class="container">
+		<h2 class="index-title">Sản phẩm đã xem</h2>
+		<div id="owl-viewed" class="owl-carousel owl-theme">
+
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('#owl-viewed').owlCarousel({
+		dots: false,
+		nav: true,
+		margin: 14,
+		navClass: ['owlcarousel__prev', 'owlcarousel__next'],
+		responsive:{
+			0:{
+				items:2,          
+			},
+			600:{
+				items:3,
+			},
+			1000:{
+				items:6,
+			}
+		},
+		navText: ["<i class='fa fa-angle-left'>","<i class='fa fa-angle-right'>"]
+	})
+
+})
+</script>
+<script>
+$(document).ready(function(){
+	if(sessionStorage.getItem('dataview') != null){
+		var sto = sessionStorage.getItem('dataview');
+		var harr = sto.split('_');
+		for(i = 0; i < harr.length;i++){
+			$.ajax({
+				url:'/products/'+harr[i]+'?view=recently',
+				//async: false,
+				success:function(data){
+					data = data.trim();
+					var content = data.split('####');
+					var list1 = '<div class="item"><a href="'+content[0]+'" ><img class="product-viewed__photo" src="'+content[3]+'" alt="'+content[1]+'" /></a><div class="viewed-title product-viewed__title"><a href="'+content[0]+'" >'+content[1]+'</a></div><div class="viewed-price">'+content[2]+'</div></div>';		
+					$('#owl-viewed').trigger('add.owl.carousel', list1).trigger('refresh.owl.carousel');	
+					// Fix height ảnh sản phẩm đã xem
+	$('.product-viewed__photo').height($('.product-viewed__photo').width())
+				}
+			});
+		} 
+	}else{
+		$('.index-viewed').addClass('hide');
+	}
+})
+// tạo product view 'view' để lấy data
+</script>
+
+
+<!-- Sản phẩm đã xem -->
+{% include 'index-by-homeware' %}
+{% if settings.index_text_show %}
+<div class="index-text">
+	<div class="container">
+		<a href="{{settings.index_text_link}}" class="index-text-btn">
+			<p class="center">
+				{{settings.index_text}}
+			</p>
+			<div class="text-logo">
+				<img src="{{'img_text_logo.png' | asset_url }}" alt="{{settings.index_text_logo}}" />
+			</div>
+		</a>
+	</div>
+</div>
+{%endif%}
+{%if settings.index_page_show%}
+<div class="index-page">
+	<div class="container">
+		<div class="page-list clearfix">
+			{%if settings.index_page_1_show%}
+			<div class="room-item">
+				<a href="{{settings.index_page_1_link}}" >
+					<div class="img" style="background: url({{'index_page_1.jpg' | asset_url}}) no-repeat;background-size: cover;background-position: center;"></div>
+					<p class="title">{{settings.index_page_1_title}}</p>
+					<div class="view-more">
+						<span>{{settings.index_page_1_btn}}</span>
+					</div>
+				</a>
+			</div>
+			{%endif%}
+			{%if settings.index_page_2_show%}
+			<div class="room-item">
+				<a href="{{settings.index_page_2_link}}" >
+					<div class="img" style="background: url({{'index_page_2.jpg' | asset_url}}) no-repeat;background-size: cover;background-position: center;"></div>
+					<p class="title">{{settings.index_page_2_title}}</p>
+					<div class="view-more">
+						<span>{{settings.index_page_2_btn}}</span>
+					</div>
+				</a>
+			</div>
+			{%endif%}
+		</div>
+	</div>
+</div>
+{%endif%}
+{%include 'index-news'%}
+
+
+

@@ -1,0 +1,138 @@
+<div id="cart">
+	<div class="container">
+		<!-- Begin empty cart -->
+		{% if cart.item_count == 0 %}
+		<div class="row" >
+			<div id="layout-page" class="col-md-12">
+				<h1>Cart</h1>
+				<p class="text-center">
+					Không có sản phẩm nào trong giỏ hàng!</p>
+				<p class="text-center"><a href="/collections/all">
+					<i class="fa fa-reply"></i> Tiếp tục mua sắm</a>
+				</p>
+			</div></div>
+		<!-- End empty cart -->
+
+		<!-- Begin cart -->
+		{% else %}
+		<div class="row" >
+			<div id="layout-page" class="col-md-12">
+				<h1>Giỏ hàng</h1>
+				<form action="/cart" method="post" id="cartformpage">
+					<table class="cart-hidden">
+						<thead>
+							<tr>
+								<th class="image">Sản phẩm</th>
+								<th class="item">&nbsp;</th>
+								<th class="variant">Thuộc tính</th>
+								<th class="qty">Số lượng</th>
+								<th class="price">Giá</th>
+								<th class="remove">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in cart.items %}
+							<tr>
+								<td class="image">
+									<div class="product_image">
+										<a href="{{ item.url }}">
+											<img src="{{ item | img_url: 'small' }}" />
+										</a>
+									</div>
+								</td>
+								<td class="item">
+									<a href="{{ item.url }}">
+										<strong>{{ item.product.title }}</strong>
+									</a>
+								</td>
+								<td class="variant"><span class="variant_title">{{ item.variant.title }}</span></td>
+								<td class="qty">
+									<input type="number" size="4" name="updates[]" min="1" id="updates_{{ item.id }}" value="{{ item.quantity }}" onfocus="this.select();" class="tc item-quantity" />
+								</td>
+								<td class="price">{{ item.line_price | money }}</td>
+								<td class="remove">
+									<a href="/cart/change?line={{ forloop.index }}&quantity=0" class="cart">Xóa</a>
+								</td>
+							</tr>
+							{% endfor %}
+							<tr class="summary">
+								<td colspan="6" class="text-right">
+									<b>Total:</b>
+									<span class="total">
+										<strong>{{ cart.total_price | money }}</strong>
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="cart-item cart-visible clearfix">
+						{% for item in cart.items %}
+						<div class="item-xs clearfix">
+							<div class="col-xs-3 product_image">
+								<a href="{{ item.url }}">
+									<img src="{{ item | img_url: 'medium' }}" />
+								</a>
+							</div>
+							<div class="col-xs-9 product-info">
+								<div class="title">
+									<a href="{{ item.url }}">
+										<strong>{{ item.product.title }}</strong>
+									</a>
+									<span class="variant_title">{{ item.variant.title }}</span>
+								</div>
+								<div class="qty">
+									<input type="number" name="updates[]" min="1" id="updates_{{ item.id }}" value="{{ item.quantity }}" class="tc item-quantity" />
+								</div>
+								<div class="price"><span>{{ item.line_price | money }}</span></div>
+								<div class="remove-xs">
+									<a href="/cart/change?line={{ forloop.index }}&quantity=0" class="cart">Xóa</a>
+								</div>
+							</div>
+						</div>
+						{%endfor%}
+						<div class="summary-xs text-right">
+							<b>Tổng cộng:</b>
+							<span class="total">
+								<strong>{{ cart.total_price | money }}</strong>
+							</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 inner-left inner-right">
+							<div class="checkout-buttons clearfix">
+								<label for="note">Ghi chú </label>
+								<textarea id="note" name="note" rows="8" cols="50">{{ cart.note }}</textarea>
+							</div>
+						</div>
+						<div class="col-md-6 cart-buttons inner-right inner-left">
+							<div class="buttons clearfix">
+								<button type="submit" id="checkout" class="button-default" name="checkout" value="" >Thanh toán</button>
+								<button type="submit" id="update-cart" class="button-default" name="update"  value="" >Cập nhật</button>
+							</div>
+						</div>
+					</div>
+					{% if additional_checkout_buttons %}
+					<div class="row">
+						<div class="extra-checkout-buttons span6">
+							{{ content_for_additional_checkout_buttons }}
+						</div>
+					</div>
+					{% endif %}
+
+				</form>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	$('.qty .item-quantity').change(function(){
+		var quan = $(this).val();
+		var id = $(this).attr('id');
+		$('.qty #'+id).val(quan);
+	});
+});
+</script>
+
+

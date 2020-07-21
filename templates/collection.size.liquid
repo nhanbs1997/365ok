@@ -1,0 +1,24 @@
+{% layout none %}
+{% paginate collection.products by 1000 %}
+{% for product in collection.products %}
+{% for option in product.options %}
+{% if option == 'Kích thước' %}
+{% assign index = forloop.index0 %}
+{% assign sizelist = '' %}
+{% assign size = '' %}
+{% for variant in product.variants %}
+{% capture size %}
+{{ variant.options[index] }}
+{% endcapture %}
+{% unless sizelist contains size %}
+<li class="ajax" data-variant-title="{{ size | split: ' - ' | first | strip_html }}" data-filter="(variant:product={{ size | strip_html }})"><span class="color color-{{ size | handleize }}"></span>{{ size | downcase | capitalize | split: ' - ' | first }}</li>
+{% capture tempList %}
+{{ sizelist | append: size | append: " " }}
+{% endcapture %}
+{% assign sizelist = tempList %}
+{% endunless %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endpaginate %}
