@@ -1,26 +1,28 @@
+{%- comment -%}
 <div id="collection" class="collection-list">
 	<div class="container">
 		<h1 class="text-center">
 			{{ collection.title | split: '.' | last }}
 		</h1>
-		
+
 		<div class="description text-center" style="margin-bottom: 50px">
 			{{ collection.description | strip_html }}
 		</div>
 		<div class="collection-cate">
 			<ul class="lists-cate clearfix">
-				{% comment %}
+			
 				{% for link in collections  %}
 				<li>
 					<a href="{{link.url}}">
 						<img src="{{ link.image.src }}">
 						{{link.title}}
-						<div class="text-center" style="font-weight: normal;font-size: 13px;">{{ link.products_count }} sản phẩm</div>
+						<div class="text-center" style="font-weight: normal;font-size: 13px;">{{ link.products_count }}
+							sản phẩm</div>
 					</a>
 
 				</li>
 				{%endfor%}
-				{% endcomment %}
+				
 				{% assign a = collection.handle %}
 				{% for link in linklists.san-pham.links %}
 				{% for link2 in linklists[link.handle].links %}
@@ -30,16 +32,17 @@
 					<a href="{{link3.object.url}}">
 						<img style="width: 100%" src="{{ link3.object.image.src }}">
 						{{link3.title}}
-						<div class="text-center collection-product-count" style="font-weight: normal;font-size: 13px;">{{ link3.object.products_count }} sản phẩm</div>
+						<div class="text-center collection-product-count" style="font-weight: normal;font-size: 13px;">
+							{{ link3.object.products_count }} sản phẩm</div>
 					</a>
 				</li>
 				{% endfor %}
 				{% endif %}
-				{% endfor %} 
+				{% endfor %}
 				{% endfor %}
 			</ul>
 		</div>
-<div id="collection-list">
+		<div id="collection-list">
 
 
 			<div class="collection-list fix-padding row">
@@ -69,7 +72,8 @@
 					{%if part.is_link%}
 					<span class="page page-node" data-page="{{part.title}}">{{part.title}}</span>
 					{%else%}
-					<span class="page page-node {%if part.title == paginate.current_page%}current{%endif%}" data-page="{{part.title}}">{{part.title}}</span>
+					<span class="page page-node {%if part.title == paginate.current_page%}current{%endif%}"
+						data-page="{{part.title}}">{{part.title}}</span>
 					{%endif%}
 					{%endfor%}
 
@@ -83,19 +87,809 @@
 	</div>
 </div>
 <script>
-$(function(){
-	$('.lists-cate img').height($('.lists-cate img').width());
-})
+	$(function () {
+		$('.lists-cate img').height($('.lists-cate img').width());
+	})
 </script>
 <script>
+	$(function () {
+		var seen = {};
+		$('#collection .product-item-wrap .img_default').each(function () {
+			var txt = $(this).attr('src');
+			if (seen[txt])
+				$(this).parents('.product-item-wrap').remove();
+			else
+				seen[txt] = true;
+		});
+	})
+</script>
+{%- endcomment -%}
+
+
+<div class="hide collection-id">{{ collection.id }}</div>
+<div class="hide collection-handle">{{ collection.handle }}</div>
+<div class="hide collection-url">{{ collection.url }}</div>
+
+<script>
 $(function(){
-var seen = {};
-	$('#collection .product-item-wrap .img_default').each(function() {
+	localStorage.setItem("menu", $('.collection-handle').text());
+})
+</script>
+<script src='{{"ionrange.js" | asset_url}}' type='text/javascript'></script>
+{{ 'ionrange.css' | asset_url | stylesheet_tag }}
+{%assign find_link = ''%}
+{%assign find_link2 = ''%}
+{% assign link_parent = '' %}
+{% assign check_for = false %}
+{% for link1 in linklists[settings.menu_tab_1_link].links %}
+{% if link1.object.handle == collection.handle %}
+{% assign link_parent = link1.object.handle %}
+{% assign find_link2 = link1.object.handle%}
+{% assign check_for = true %}{% break %}
+{% endif %}
+{% for link2 in linklists[link1.handle].links %}
+{% if link2.object.handle == collection.handle %}
+{% assign link_parent = link2.object.handle %}
+{% assign find_link2 = link1.object.handle%}
+{% assign check_for = true %}{% break %}
+{% endif %}
+{% for link3 in linklists[link2.handle].links %}
+{% if link3.object.handle == collection.handle %}
+{% assign link_parent = link2.object.handle %}
+{% assign find_link2 = link1.object.handle%}
+{% assign check_for = true %}{% break %}
+{% endif %}
+{%endfor%}
+{% if check_for == true %}{% break %}{% endif%}
+{% endfor %}
+{% if check_for == true %}{% break %}{% endif%}
+{% endfor %}
+{%assign find_link = link_parent%}
+{% paginate collection.products by 100 %}
+<div id="collection" class="collection-all" style="margin-top: 30px">
+	<div class="container">
+		
+		<div class="row">
+			<div class="mb30">
+				<div class="shop-title clearfix">
+					<h1>{% if collection.handle == 'all' %}Tất cả sản phẩm{% else %}{{ collection.title | split: '.' | last }}{% endif %}</h1>
+				</div>
+				{% if collection.description != nil %}
+				<div class="sub-des">{{collection.description}}</div>
+				{%endif%}
+			</div>
+			{% comment %}
+			<div class="col-xs-12 col-sm-4 col-md-3 hidden-xs">
+				{% include 'sidebar-left'%}
+			</div>
+			{% endcomment %}
+			<div class="collection-cate">
+				<ul class="lists-cate clearfix">
+				{% comment %}
+					{% for link in collections  %}
+					<li>
+						<a href="{{link.url}}">
+							<img src="{{ link.image.src }}">
+							{{link.title}}
+							<div class="text-center" style="font-weight: normal;font-size: 13px;">{{ link.products_count }}
+								sản phẩm</div>
+						</a>
+	
+					</li>
+					{%endfor%}
+					{% endcomment %}
+					{% assign a = collection.handle %}
+					{% for link in linklists.san-pham.links %}
+					{% for link2 in linklists[link.handle].links %}
+					{% if link2.object.handle == a %}
+					{% for link3 in linklists[link2.handle].links %}
+					<li data-product="{{ link3.object.products_count }}">
+						<a href="{{link3.object.url}}">
+							<img style="width: 100%" src="{{ link3.object.image.src }}">
+							{{link3.title}}
+							<div class="text-center collection-product-count" style="font-weight: normal;font-size: 13px;">
+								{{ link3.object.products_count }} sản phẩm</div>
+						</a>
+					</li>
+					{% endfor %}
+					{% endif %}
+					{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<!-- Bộ lọc - START -->
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all">
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+
+
+				<div class="bo-loc">
+					<span class="loc-theo">Lọc theo:</span>
+					<div class="filter-wrap">
+						<span class="filter thuong-hieu">Thương hiệu<i class="fa fa-angle-down"></i></span>
+						<ul class="filter-item filter-item-thuong-hieu">
+							{% for vendor in collection.all_vendors %}
+							<li class="no-ajax" data-filter="(vendor:product={{ vendor }})">{{ vendor }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="filter-wrap">
+						<span class="filter gia">Giá<i class="fa fa-angle-down"></i></span>
+						<ul class="filter-item filter-item-gia">
+
+							<div id="number-range">
+								<div class="range">
+									<input class="currency" type="number" min="0" max="19990000" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field">
+									<span>VND</span>
+								</div>
+								<div class="range">
+									<input class="currency" type="number" min="0" max="20000000" oninput="validity.valid||(value='3000');" id="max_price" class="price-range-field">
+									<span>VND</span>
+								</div>
+							</div>
+							<div id="slider-range" class="price-filter-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" name="rangeInput">
+								<div class="ui-slider-range ui-corner-all ui-widget-header">
+								</div>
+								<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+								<span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+							</div>
+							<span class="done">Đóng</span>
+							<script>
+
+
+
+
+
+							$(function(){
+
+								$("#slider-range").slider({
+									range: true,
+									orientation: "horizontal",
+									min: 0,
+									max: 20000000,
+									values: [0, 20000000],
+									step: 10000,
+									slide: function (event, ui) {
+										if (ui.values[0] == ui.values[1]) {
+											return false;
+										}
+
+										$("#min_price").val(ui.values[0]);
+										$("#max_price").val(ui.values[1]);
+									}
+								});
+
+								$("#min_price").val($("#slider-range").slider("values", 0));
+								$("#max_price").val($("#slider-range").slider("values", 1));
+
+							});
+							</script>
+
+						</ul>
+					</div>
+					<div class="filter-wrap">
+						<span class="filter mau-sac">Màu sắc<i class="fa fa-angle-down"></i></span>
+						<ul class="filter-item filter-item-mau-sac">
+
+							{% for product in collection.products %}
+							{% for option in product.options %}
+							{% if option == 'Màu sắc' %}
+							{% assign index = forloop.index0 %}
+							{% assign colorlist = '' %}
+							{% assign color = '' %}
+							{% for variant in product.variants %}
+							{% capture color %}
+							{{ variant.options[index] }}
+							{% endcapture %}
+							{% unless colorlist contains color %}
+
+							<li class="no-ajax" data-variant-title="{{ color | split: ' - ' | first | strip_html }}" data-filter="(variant:product={{ color | strip_html }})"><span class="color color-{{ color | split: ' - ' | first | handleize }}"></span>{{ color | downcase | capitalize | split: ' - ' | first }}</li>
+
+							{% capture tempList %}
+							{{colorlist | append: color | append: " " }}
+							{% endcapture %}
+							{% assign colorlist = tempList %}
+							{% endunless %}
+							{% endfor %}
+							{% endif %}
+							{% endfor %}
+							{% endfor %}
+							<style>
+								{% for i in (1..100) %}
+								{% capture filter_color_name_i %}filter-color-name-{{i}}{% endcapture %}
+								{% capture filter_color_i %}filter-color-{{i}}{% endcapture %}
+								{% if settings[filter_color_name_i] | downcase == color | downcase %}				
+								.bo-loc .filter-item-mau-sac li .color-{{ settings[filter_color_name_i] | split: ' - ' | first | handleize }}:before{
+								background: {{ settings[filter_color_i] }}
+								}
+								{% endif %}
+								{% endfor %}
+							</style>
+
+							<span class="clear">Xóa</span>
+							<span class="done">Đóng</span>
+							<script>
+							$(function(){
+								var urls = [
+									'/collections/{{ collection.handle }}?page=2&view=color',
+									'/collections/{{ collection.handle }}?page=3&view=color',
+									'/collections/{{ collection.handle }}?page=4&view=color',
+									'/collections/{{ collection.handle }}?page=5&view=color'
+								];
+								$.each(urls, function(i,u){ 
+									$.ajax(u, { 
+										type: 'POST',
+										success: function (data) {
+											$('.filter-item-mau-sac').append(data);
+
+										} 
+									})
+
+								})
+							})
+							</script>
+
+						</ul>
+					</div>
+
+					<div class="filter-wrap">
+
+						<span class="filter kieu-dang">Kiểu dáng<i class="fa fa-angle-down"></i></span>
+						<ul class="filter-item filter-item-kieu-dang">
+
+							{% for product in collection.products %}
+
+							{% for option in product.options %}
+							{% if option == 'Kiểu dáng' %}
+							{% assign index = forloop.index0 %}
+							{% assign stylelist = '' %}
+							{% assign style = '' %}
+							{% for variant in product.variants %}
+							{% capture style %}
+							{{ variant.options[index] }}
+							{% endcapture %}
+							{% unless stylelist contains style %}
+							<li class="no-ajax" data-variant-title="{{ style | split: ' - ' | first | strip_html }}" data-filter="(variant:product={{ style | strip_html }})">{{ style | downcase | capitalize | split: ' - ' | first }}</li>
+							{% capture tempList %}
+							{{ stylelist | append: style | append: " " }}
+							{% endcapture %}
+							{% assign stylelist = tempList %}
+
+							{% endunless %}
+							{% endfor %}
+
+							{% endif %}
+							{% endfor %}
+							{% endfor %}
+							{% unless check_style %}
+
+							{% endunless %}
+
+							<span class="clear">Xóa</span>
+							<span class="done">Đóng</span>
+							<script>
+
+							$(function(){
+								var urls = [
+									'/collections/{{ collection.handle }}?page=2&view=style',
+									'/collections/{{ collection.handle }}?page=3&view=style',
+									'/collections/{{ collection.handle }}?page=4&view=style',
+									'/collections/{{ collection.handle }}?page=5&view=style'
+								];
+								$.each(urls, function(i,u){ 
+									$.ajax(u, { 
+										type: 'POST',
+										success: function (data) {
+											$('.filter-item-kieu-dang').append(data);
+
+
+										} 
+									})
+
+								})
+							})
+							</script>
+						</ul>
+					</div>
+
+					<div class="filter-wrap">
+						<span class="filter kick-thuoc">Kích thước<i class="fa fa-angle-down"></i></span>
+						<ul class="filter-item filter-item-kich-thuoc">
+							{% for product in collection.products %}
+							{% for option in product.options %}
+							{% if option == 'Kích thước' %}
+							{% assign index = forloop.index0 %}
+							{% assign sizelist = '' %}
+							{% assign size = '' %}
+							{% for variant in product.variants %}
+							{% capture size %}
+							{{ variant.options[index] }}
+							{% endcapture %}
+							{% unless sizelist contains size %}
+
+							<li class="no-ajax" data-variant-title="{{ size | split: ' - ' | first | strip_html }}" data-filter="(variant:product={{ size | strip_html }})"><span class="color color-{{ size | handleize }}"></span>{{ size | downcase | capitalize | split: ' - ' | first }}</li>
+
+							{% capture tempList %}
+							{{ sizelist | append: size | append: " " }}
+							{% endcapture %}
+							{% assign sizelist = tempList %}
+							{% endunless %}
+							{% endfor %}
+							{% endif %}
+							{% endfor %}
+							{% endfor %}
+							<span class="clear">Xóa</span>
+							<span class="done">Đóng</span>
+							<script>
+							$(function(){
+								var urls = [
+									'/collections/{{ collection.handle }}?page=2&view=size',
+									'/collections/{{ collection.handle }}?page=3&view=size',
+									'/collections/{{ collection.handle }}?page=4&view=size',
+									'/collections/{{ collection.handle }}?page=5&view=size'
+								];
+								$.each(urls, function(i,u){ 
+
+									$.ajax(u, { 
+										type: 'POST',
+										success: function (data) {
+
+											$('.filter-item-kich-thuoc').append(data);
+
+										} 
+									})
+								})
+							})
+							</script>
+
+
+
+						</ul>
+					</div>
+					<div class="sort-by">
+						<span>Sắp xếp: </span>
+						<select>									
+							<option value="&sortby=(updated_at:product=asc)">Mặc định</option>
+							<option value="&sortby=(price:product=asc)">Giá: Tăng dần</option>
+							<option value="&sortby=(price:product=desc)">Giá: Giảm dần</option>
+							<option value="&sortby=(title:product=asc)">Tên: A-Z</option>
+							<option value="&sortby=(title:product=desc)">Tên: Z-A</option>
+							<option value="&sortby=(updated_at:product=desc)">Cũ nhất</option>
+							<option value="&sortby=(updated_at:product=asc)">Mới nhất</option>
+							<option value="&sortby=(sold_quantity:product=desc)">Bán chạy nhất</option>
+							<option value="&sortby=(quantity:product=desc)">Tồn kho: Giảm dần</option>
+						</select>
+					</div>
+				</div>
+
+				<script>
+				$(function(){
+					$('.filter').on('click', function(){
+						$(this).toggleClass('active');
+						$(this).parent().siblings().find('.filter').removeClass('active');
+						$(this).parent().siblings().find('.filter-item').removeClass('active');
+						if($(this).hasClass('active')){
+							$(this).parent().find('.filter-item').addClass('active');
+						}else{
+							$(this).parent().find('.filter-item').removeClass('active');
+						}
+					})
+					$('body').on('click', '.filter-item li', function(){
+						$(this).toggleClass('active');
+						if($(this).hasClass('active')){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else{
+							$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						}
+						console.log($(this).text().trim());
+						cau_truy_van();
+					})
+					var min_price = 0;
+					var max_price = 20000000;
+					$("#slider-range,#price-range-submit").click(function () {
+						min_price = $('#min_price').val();
+						max_price = $('#max_price').val();
+						if(min_price > 0 && max_price == 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else if(min_price > 0 && max_price < 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else if(min_price == 0 && max_price < 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else if(min_price == 0 && max_price == 20000000){
+							$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						};
+						cau_truy_van();
+					})
+					$('#price-range-submit').hide();
+					$("#min_price,#max_price").on('change', function () {
+						$('#price-range-submit').show();
+						min_price = parseInt($("#min_price").val());
+						max_price = parseInt($("#max_price").val());
+						if(min_price > 0 && max_price == 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else if(min_price > 0 && max_price < 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else if(min_price == 0 && max_price < 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}else if(min_price < 1 && max_price == 20000000){
+							$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						}
+						if (min_price > max_price) {
+							$('#max_price').val(min_price);
+						}
+
+						$("#slider-range").slider({
+							values: [min_price, max_price]
+						});
+						cau_truy_van();
+					});
+					$("#min_price,#max_price").on("paste keyup", function () {                                        
+
+						$('#price-range-submit').show();
+
+						min_price = parseInt($("#min_price").val());
+
+						max_price = parseInt($("#max_price").val());
+
+						if(min_price == max_price){
+
+							max_price_range = min_price + 100;
+
+							$("#min_price").val(min_price);		
+							$("#max_price").val(max_price);
+						}
+
+						$("#slider-range").slider({
+							values: [min_price, max_price]
+						});
+						if(min_price > 0 && max_price == 20000000){
+							$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						}else if(min_price > 0 && max_price < 20000000){
+							$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						}else if(min_price == 0 && max_price < 20000000){
+							$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						}else if(min_price == 0 && max_price == 20000000){
+							$(this).parents('.filter-wrap').find('.filter').addClass('li-checked');
+						}
+						cau_truy_van();
+					});
+
+					$('.filter-item .clear').on('click', function(){
+						$(this).parent().find('li').removeClass('active');
+						$(this).parents('.filter-wrap').find('.filter').removeClass('li-checked');
+						cau_truy_van();
+					})
+					$('.filter-item .done').on('click', function(){
+						$(this).parents('.filter-wrap').find('.filter').trigger('click');
+					})
+
+					$('.filter-item-thuong-hieu li').sort(function(a, b) { 
+						var A = $(a).text().trim(); 
+						var B = $(b).text().trim();
+						return (A < B) ? -1 : (A > B) ? 1 : 0; 
+					}).appendTo($('.filter-item-thuong-hieu')); 
+					var sort = '';
+					$('.sort-by select').on('change', function() {
+						sort = this.value;
+						cau_truy_van();
+					});
+					var page = 1;
+					$('body').on('click', '.page-node', function (){
+						page = $(this).data('page');
+						if($(this).data('page') == 'next'){
+							page = $('.page-node.current').data('page') + 1;
+						}else if($(this).data('page') == 'prev'){
+							page = $('.page-node.current').data('page') - 1;
+						}
+						cau_truy_van();
+					})
+					var str = '', str_pagi = '';
+					var cau_truy_van = function(){
+						var q = '', thuong_hieu = '', mau_sac = '', kich_thuoc = '', kieu_dang = '', gia = '';
+						$('.filter-item-thuong-hieu li.active').each(function(){
+							thuong_hieu = thuong_hieu + $(this).data('filter') + '||';
+						})
+						thuong_hieu = thuong_hieu.substring(0,thuong_hieu.length - 2);
+						if(thuong_hieu != ''){
+							thuong_hieu = '('+ thuong_hieu +')';
+							q += '&&' + thuong_hieu;
+						}
+						$('.filter-item-mau-sac li.active').each(function(){
+							mau_sac = mau_sac + $(this).data('filter') + '||';
+						})
+						mau_sac = mau_sac.substring(0,mau_sac.length - 2);
+						if(mau_sac != ''){
+							mau_sac = '('+ mau_sac +')';
+							q += '&&' + mau_sac;
+						}
+						$('.filter-item-kich-thuoc li.active').each(function(){
+							kich_thuoc = kich_thuoc + $(this).data('filter') + '||';
+						})
+						kich_thuoc = kich_thuoc.substring(0,kich_thuoc.length - 2);
+						if(kich_thuoc != ''){
+							kich_thuoc = '('+ kich_thuoc +')';
+							q += '&&' + kich_thuoc;
+						}
+						$('.filter-item-kieu-dang li.active').each(function(){
+							kieu_dang = kieu_dang + $(this).data('filter') + '||';
+						})
+						kieu_dang = kieu_dang.substring(0,kieu_dang.length - 2);
+						if(kieu_dang != ''){
+							kieu_dang = '('+ kieu_dang +')';
+							q += '&&' + kieu_dang;
+						}
+						gia = '((price:product>'+min_price+')&&(price:product<='+max_price+'))';
+						if(gia != ''){
+							q += '&&' + gia;
+						}
+						var collection_id = $('.collection-id').html();
+						var collection_handle = $('.collection-handle').html();
+						if(q == '&&((price:product>0)&&(price:product<=20000000))'){
+							if(collection_handle == 'all'){
+								str = '/search?q=filter=(collectionid:product>0)'+ q +'&view=ajax_collection_no_check' + sort + '&page=' + page;	
+
+							}else{
+								str = '/search?q=filter=(collectionid:product='+collection_id+')'+ q +'&view=ajax_collection_no_check' + sort + '&page=' + page;
+							}
+						}else{
+							if(collection_handle == 'all'){
+								str = '/search?q=filter=(collectionid:product>0)'+ q +'&view=ajax-collection' + sort + '&page=' + page;	
+
+							}else{
+								str = '/search?q=filter=(collectionid:product='+collection_id+')'+ q +'&view=ajax-collection' + sort + '&page=' + page;
+							}
+						}
+
+
+						console.log(str, q);
+						$.ajax({
+							url: str,
+							success: function(data){
+								$('#collection-list').html(data);
+
+								$('.choise-color').hover(function(){
+									var image = $(this).data('img');
+									$(this).addClass('active').siblings().removeClass('active');
+									$(this).parents('.product-items').find('.img_default').attr('src', image);
+								}, function(){	
+									$('.choise-color:first-child').addClass('active').siblings().removeClass('active');
+								})
+								$('.img_default').hover(function(){
+									$(this).css('opacity', '0')
+								}, function(){	
+									$(this).css('opacity', '1')
+								})
+								$('.product-items .img-top a img').height($('.product-items .img-top a img').width());
+								$('.choise-color').hover(function(){
+									var image = $(this).data('img');
+									$(this).addClass('active').siblings().removeClass('active');
+									$(this).parents('.product-items').find('.img_default').attr('src', image);
+								}, function(){	
+									$(this).parent().find('.selected').addClass('active').siblings().removeClass('active');
+									var a = $(this).parent().find('.selected').data('img');
+									$(this).parents('.product-items').find('.img_default').attr('src', a);
+								})
+								/*if(mau_sac != '' || kich_thuoc != '' || kieu_dang != ''){
+									$('#collection-list .product-items').each(function(){
+										$(this).parent().addClass('hide');
+									})
+								}*/
+								$('.filter-item-mau-sac li.active').each(function(){
+									var filter_variant_title = $(this).data('variant-title');
+									$('#collection-list .product-items').each(function(){
+										if(filter_variant_title == $(this).data('variant-option-1')){
+											$(this).parent().removeClass('hide');
+										}else if(filter_variant_title == $(this).data('variant-option-2')){
+											$(this).parent().removeClass('hide');
+										}else if(filter_variant_title == $(this).data('variant-option-3')){
+											$(this).parent().removeClass('hide');
+										}
+									})
+								})
+								$('.filter-item-kich-thuoc li.active').each(function(){
+									var filter_variant_title = $(this).data('variant-title');
+									$('#collection-list .product-items').each(function(){
+										if(filter_variant_title == $(this).data('variant-option-1')){
+											$(this).parent().removeClass('hide');
+										}else if(filter_variant_title == $(this).data('variant-option-2')){
+											$(this).parent().removeClass('hide');
+										}else if(filter_variant_title == $(this).data('variant-option-3')){
+											$(this).parent().removeClass('hide');
+										}
+									})
+								})
+								$('.filter-item-kieu-dang li.active').each(function(){
+									var filter_variant_title = $(this).data('variant-title');
+									$('#collection-list .product-items').each(function(){
+										if(filter_variant_title == $(this).data('variant-option-1')){
+											$(this).parent().removeClass('hide');
+										}else if(filter_variant_title == $(this).data('variant-option-2')){
+											$(this).parent().removeClass('hide');
+										}else if(filter_variant_title == $(this).data('variant-option-3')){
+											$(this).parent().removeClass('hide');
+										}
+									})
+								})
+								var seen = {};
+								$('.product-item-wrap .img_default').each(function() {
+									var txt = $(this).attr('src');
+									if (seen[txt])
+										$(this).parents('.product-item-wrap').remove();
+									else
+										seen[txt] = true;
+								});	
+
+								
+							}
+						})
+					}
+					})
+
+				$(document).ajaxComplete(function() {
+					console.log($(".filter-item-mau-sac").children('li').length);
+					if($(".filter-item-mau-sac").children('li').length == 0){
+						$('.filter-item-mau-sac').parents('.filter-wrap').addClass('hide');
+					}else{
+						$('.filter-item-mau-sac').parents('.filter-wrap').removeClass('hide');
+					}
+					if($(".filter-item-kich-thuoc").children('li').length == 0){
+						$('.filter-item-kich-thuoc').parents('.filter-wrap').addClass('hide');
+					}else{
+						$('.filter-item-kich-thuoc').parents('.filter-wrap').removeClass('hide');
+					}
+
+					if($(".filter-item-kieu-dang").children('li').length == 0){
+						$('.filter-item-kieu-dang').parents('.filter-wrap').addClass('hide');
+					}else{
+						$('.filter-item-kieu-dang').parents('.filter-wrap').removeClass('hide');
+					}
+
+					var seen = {};
+					$('.filter-item-mau-sac li').each(function(index) {
+						var txt = $(this).text().trim();
+						if (seen[txt])
+							$(this).remove();
+						else
+							seen[txt] = true;
+					})
+					var seen = {};
+					$('.filter-item-kieu-dang li').each(function(index) {
+						var txt = $(this).text().trim();
+						if (seen[txt])
+							$(this).remove();
+						else
+							seen[txt] = true;
+					})
+					var seen = {};
+					$('.filter-item-kich-thuoc li').each(function(index) {
+						var txt = $(this).text().trim();
+						if (seen[txt])
+							$(this).remove();
+						else
+							seen[txt] = true;
+					})
+					$('.filter-item-mau-sac li').sort(function(a, b) { 
+						var A = $(a).text().trim(); 
+						var B = $(b).text().trim();
+						return (A < B) ? -1 : (A > B) ? 1 : 0; 
+					}).appendTo($('.filter-item-mau-sac')); 
+					$('.filter-item-kieu-dang li').sort(function(a, b) { 
+						var A = $(a).text().trim(); 
+						var B = $(b).text().trim();
+						return (A < B) ? -1 : (A > B) ? 1 : 0; 
+					}).appendTo($('.filter-item-kieu-dang')); 
+					$('.filter-item-kich-thuoc li').sort(function(a, b) { 
+						var A = $(a).text().trim(); 
+						var B = $(b).text().trim();
+						return (A < B) ? -1 : (A > B) ? 1 : 0; 
+					}).appendTo($('.filter-item-kich-thuoc')); 
+
+
+
+
+				})
+				</script>
+				<!-- Bộ lọc - END -->
+				{% comment %}
+				{%if collection.products_count > 0%}
+				<div class="pagi-and-sort clearfix">
+					<div class="browse-tags">
+						<span>Sắp xếp theo:</span>
+						<div class=sort-by>
+							<a data-handle="created-descending" href="/collections/{{collection.handle}}?sort_by=created-descending">Mới nhất</a>
+							<a data-handle="best-selling" href="/collections/{{collection.handle}}?sort_by=best-selling">Bán chạy</a>
+							<a data-handle="price-ascending" href="/collections/{{collection.handle}}?sort_by=price-ascending">Giá tăng</a>
+							<a data-handle="price-descending" href="/collections/{{collection.handle}}?sort_by=price-descending">Giá giảm</a>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				{% endcomment %}
+				<div id="collection-list">
+
+
+					<div class="collection-list fix-padding row">
+
+						{%if collection.products_count > 0%}
+						{%for product in collection.products%}
+						{% for variant in product.variants %}
+						<div class="col-xs-6 col-sm-6 col-md-3 product-item-wrap">
+							{%include 'product-loop'%}
+						</div>
+						{% endfor %}
+						{%endfor%}
+						{%else%}
+						<p>
+							Chưa có sản phẩm nào trong nhóm.
+						</p>
+						{%endif%}
+					</div>
+					<div class="paginate clearfix">
+						{% if paginate.pages > 1 %}
+						<div id="pagination">
+							{% if paginate.previous %}
+							<a class="page-node" data-page="prev" href="javascript:void(0)">Trước</a>
+							{% endif %}
+
+							{%for part in paginate.parts%}
+							{%if part.is_link%}
+							<span class="page page-node" data-page="{{part.title}}">{{part.title}}</span>
+							{%else%}
+							<span class="page page-node {%if part.title == paginate.current_page%}current{%endif%}" data-page="{{part.title}}">{{part.title}}</span>
+							{%endif%}
+							{%endfor%}
+
+							{% if paginate.next %}
+							<a class="page-node" data-page="next" href="javascript:void(0)">Sau</a>
+							{% endif %}
+						</div>
+						{%endif%}
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+{% endpaginate %}
+
+<script>
+$(document).ready(function(){
+	$('.sort-by a').each(function(index){
+		var $this = $(this);
+		var link = $this.attr('href');
+		var path = window.location.pathname;
+		var search = path + window.location.search;
+		if( search == link ){
+			$this.addClass('active');
+		}
+	});
+	$('.product-items .img-top a img').height($('.product-items .img-top a img').width());
+	$('.choise-color').hover(function(){
+		var image = $(this).data('img');
+		$(this).addClass('active').siblings().removeClass('active');
+		$(this).parents('.product-items').find('.img_default').attr('src', image);
+	}, function(){	
+		$(this).parent().find('.selected').addClass('active').siblings().removeClass('active');
+		var a = $(this).parent().find('.selected').data('img');
+		$(this).parents('.product-items').find('.img_default').attr('src', a);
+
+	})
+	$('.img_default').hover(function(){
+
+		$(this).css('opacity', '0')
+	}, function(){	
+		$(this).css('opacity', '1')
+	})
+
+
+	var seen = {};
+	$('.product-item-wrap .img_default').each(function() {
 		var txt = $(this).attr('src');
 		if (seen[txt])
 			$(this).parents('.product-item-wrap').remove();
 		else
 			seen[txt] = true;
 	});
-})
+});
 </script>

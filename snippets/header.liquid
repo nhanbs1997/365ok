@@ -163,10 +163,10 @@
 						<ul class="menu-level-2-wrap">
 							{% if link.title == 'New' or link.title == 'Mới' %}
 							<li class="anh-level-2">
-								<a href="{{ link.url }}">
+								<a href="{{ settings.hotdeal-link }}">
 
-									<img src="{{ collections[link.object.handle].image }}">
-									<span>New Arrivals</span>
+									<img src="{{ 'img-hotdeal.jpg' | asset_url }}">
+									<span>{{ settings.hotdeal-title }}</span>
 								</a>
 							</li>
 							{% endif %}

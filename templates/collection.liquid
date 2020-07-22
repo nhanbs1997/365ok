@@ -106,6 +106,8 @@ $(function(){
 							{% for vendor in collection.all_vendors %}
 							<li class="no-ajax" data-filter="(vendor:product={{ vendor }})">{{ vendor }}</li>
 							{% endfor %}
+							<span class="clear">Xóa</span>
+							<span class="done">Đóng</span>
 						</ul>
 					</div>
 					<div class="filter-wrap">
@@ -535,8 +537,8 @@ $(function(){
 							}
 						}
 
-
-						console.log(str, q);
+						decodeURIComponent(str);
+						console.log(str);
 						$.ajax({
 							url: str,
 							success: function(data){
@@ -564,11 +566,11 @@ $(function(){
 									var a = $(this).parent().find('.selected').data('img');
 									$(this).parents('.product-items').find('.img_default').attr('src', a);
 								})
-								if(mau_sac != '' || kich_thuoc != '' || kieu_dang != ''){
+								/*if(mau_sac != '' || kich_thuoc != '' || kieu_dang != ''){
 									$('#collection-list .product-items').each(function(){
 										$(this).parent().addClass('hide');
 									})
-								}
+								}*/
 								$('.filter-item-mau-sac li.active').each(function(){
 									var filter_variant_title = $(this).data('variant-title');
 									$('#collection-list .product-items').each(function(){
@@ -605,6 +607,16 @@ $(function(){
 										}
 									})
 								})
+								var seen = {};
+								$('.product-item-wrap .img_default').each(function() {
+									var txt = $(this).attr('src');
+									if (seen[txt])
+										$(this).parents('.product-item-wrap').remove();
+									else
+										seen[txt] = true;
+								});	
+
+								
 							}
 						})
 					}

@@ -81,6 +81,21 @@ $(function(){
 						<img class="product-image-feature full-width" src="{{'img-default.png' | asset_url}}" width="100%"  alt="{{product.title}}"/>
 						{%endif%}
 					</div>
+					<div class="thumbs__photo visible-xs">
+						{% for thumb in product.images %}
+						<img class="thumb__photo {% if forloop.first %}active{% endif %}" src="{{ thumb.src | img_url: 'thumb' }}">
+						{% endfor %}
+					</div>
+					<script>
+$(function(){
+	$('.thumb__photo').on('click', function(){
+		$(this).addClass('active').siblings().removeClass('active');
+		var index = $(this).index();
+				$('#sliderproduct').trigger('to.owl.carousel', [index,300]);
+	})
+})
+					</script>
+					<div class="fb-share-button" data-href="{{product.url}}" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{product.url}}" class="fb-xfbml-parse-ignore">Chia sẻ</a></div>
 					<!-- Product Collapse - Start -->
 					<div class="panel-group hidden-xs" id="product-collapse">
 						<!-- Mô tả - Start -->
@@ -331,7 +346,7 @@ $(function(){
 					</form>
 					<!-- ===== Đặt hàng nhanh - Start ===== -->
 					<div class="order-fast-wrap">
-						<div class="order-fast" data-toggle="modal" data-target="#order-fast">Đặt hàng nhanh</div>
+						<div class="order-fast" data-toggle="modal" {% comment %}data-target="#order-fast"{% endcomment %}>Đặt hàng nhanh</div>
 					</div>
 
 					<div class="modal fade" id="order-fast" role="dialog">
@@ -622,6 +637,24 @@ $(document).ready(function(){
 		};
 		jQuery.ajax(params);
 	});
+	$('.order-fast').on('click', function(e){
+		e.preventDefault();
+		var params = {
+			type: 'POST',
+			url: '/cart/add.js',
+			async : false,
+			data: jQuery('#add-item-form').serialize(),
+			dataType: 'json',
+			success: function(line_item) {
+				window.location = '/checkout';
+			},
+			error: function(XMLHttpRequest, textStatus) {
+				Haravan.onError(XMLHttpRequest, textStatus);
+			}
+		};
+		jQuery.ajax(params);
+
+	})
 	/*$(".product-thumb img").click(function(){
 		$(".product-thumb").removeClass('active');
 		$(this).parents('li').addClass('active');

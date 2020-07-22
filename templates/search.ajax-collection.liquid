@@ -4,13 +4,9 @@
 
 	{% if search.results.size > 0 %}
 	{% for product in search.results %}
-	{% for variant in product.variants %}
-	<div class="col-xs-6 col-sm-6 col-md-3">
-		
-		{%include 'product-loop'%}
-		
+	<div class="col-xs-6 col-sm-6 col-md-3 product-item-wrap">
+		{%include 'product-loop-product'%}
 	</div>
-	{%endfor%}
 	{%endfor%}
 	{%else%}
 	<p>

@@ -65,7 +65,7 @@
 			<img class="img_hover" src="{{ variant.image.src | img_url: 'large' }}" alt="{{variant.title}}">
 			{% endif %}
 			{% else %}
-			<img class="img_default" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
+			<img class="img_default" data-option="{% for option in product.options %}{{ option }}{% endfor %}" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
 			
 			<img class="img_hover" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{product.title}}">
 		

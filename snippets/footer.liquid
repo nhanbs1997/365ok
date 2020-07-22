@@ -20,15 +20,19 @@
 						<div class="footer-contact-us">
 							<div class="footer-contact-us-email footer-contact-flex">
 								<span class="ic-bef ic-socl-email ic-solid"></span>
-								<a href="mailto:{{ settings.header-email }}"><span>{{ settings.header-email }}</span></a>
+								<a
+									href="mailto:{{ settings.header-email }}"><span>{{ settings.header-email }}</span></a>
 							</div>
 							<div class="footer-contact-us-phone footer-contact-flex">
 								<span class="ic-bef ic-socl-phone ic-solid"></span>
-								<a href="tel:+{{ settings.header-phone | replace: ' ', '' }}"><span>+{{ settings.header-phone }}</span></a>
-								<span class="call-only" style="margin-left: 5px; font-size: 12px; color: #ababab">(Chỉ gọi)</span>
+								<a
+									href="tel:+{{ settings.header-phone | replace: ' ', '' }}"><span>+{{ settings.header-phone }}</span></a>
+								<span class="call-only" style="margin-left: 5px; font-size: 12px; color: #ababab">(Chỉ
+									gọi)</span>
 							</div>
 							<div class="footer-contact-us-hour">
-								<span class="circle" style="margin-left: 3px; margin-right: 9px"></span><span>Giờ mở cửa: </span><span>{{settings.footer_col1_content}}</span>
+								<span class="circle" style="margin-left: 3px; margin-right: 9px"></span><span>Giờ mở
+									cửa: </span><span>{{settings.footer_col1_content}}</span>
 							</div>
 						</div>
 						<h4 class="footer-title  footer-title-1">Địa chỉ</h4>
@@ -70,7 +74,9 @@
 					<div class="clearfix">
 						{%if settings.footer_col2_show%}
 						<div class="footer-col2 footer-top__col">
-							<h4 class="footer-title" data-toggle="collapse" data-target="#{{settings.footer_col2_title | handleize }}">{{settings.footer_col2_title}}</h4>
+							<h4 class="footer-title" data-toggle="collapse"
+								data-target="#{{settings.footer_col2_title | handleize }}">
+								{{settings.footer_col2_title}}</h4>
 							<div class="footer-menu" id="{{settings.footer_col2_title | handleize }}" class="collapse">
 								<ul>
 									{%for link in linklists[settings.footer_col2_menu].links%}
@@ -82,8 +88,11 @@
 						{%endif%}
 						{%if settings.footer_col3_show%}
 						<div class="footer-col2 footer-top__col">
-							<h4 class="footer-title collapsed" data-toggle="collapse" data-target="#{{settings.footer_col3_title | handleize }}">{{settings.footer_col3_title}}</h4>
-							<div class="footer-menu collapse" id="{{settings.footer_col3_title | handleize }}" class="collapse">
+							<h4 class="footer-title collapsed" data-toggle="collapse"
+								data-target="#{{settings.footer_col3_title | handleize }}">
+								{{settings.footer_col3_title}}</h4>
+							<div class="footer-menu collapse" id="{{settings.footer_col3_title | handleize }}"
+								class="collapse">
 								<ul>
 									{%for link in linklists[settings.footer_col3_menu].links%}
 									<li><a href="{{link.url}}">{{link.title}}</a></li>
@@ -94,16 +103,22 @@
 						{%endif%}
 						{%if settings.footer_col4_show%}
 						<div class="footer-col2 footer-top__col">
-							<h4 class="footer-title footer-title-mobile" data-toggle="collapse" data-target="#{{settings.footer_col4_title | handleize }}">{{settings.footer_col4_title}}</h4>
-							<div class="footer-menu collapse" id="{{settings.footer_col4_title | handleize }}" class="collapse">
+							<h4 class="footer-title footer-title-mobile" data-toggle="collapse"
+								data-target="#{{settings.footer_col4_title | handleize }}">
+								{{settings.footer_col4_title}}</h4>
+							<div class="footer-menu collapse" id="{{settings.footer_col4_title | handleize }}"
+								class="collapse">
 								<ul>
 									{%for link in linklists[settings.footer_col4_menu].links%}
 									<li><a href="{{link.url}}">{{link.title}}</a></li>
 									{%endfor%}
 								</ul>
 							</div>
-							<h4 class="footer-title" data-toggle="collapse" data-target="#{{settings.footer_col4_title_2 | handleize }}">{{settings.footer_col4_title_2}}</h4>
-							<div class="footer-menu collapse" id="{{settings.footer_col4_title_2 | handleize }}" class="collapse">
+							<h4 class="footer-title" data-toggle="collapse"
+								data-target="#{{settings.footer_col4_title_2 | handleize }}">
+								{{settings.footer_col4_title_2}}</h4>
+							<div class="footer-menu collapse" id="{{settings.footer_col4_title_2 | handleize }}"
+								class="collapse">
 								<ul>
 									{%for link in linklists[settings.footer_col4_menu_2].links%}
 									<li><a href="{{link.url}}">{{link.title}}</a></li>
@@ -120,33 +135,47 @@
 						<p class="title-top newsletter__title">{{settings.newsletter_title}}</p>
 						{% form 'customer' %}
 						{{ form.errors | default_errors }}
-						<input type="hidden" id="contact_tags" name="contact[tags]" value="khách hàng tiềm năng, nhận thông báo" />
-						<input name="contact[name]" type="email" id="contact_email"  placeholder="Email/Số điện thoại"/>
+						<input type="hidden" id="contact_tags" name="contact[tags]"
+							value="khách hàng tiềm năng, nhận thông báo" />
+						<input name="contact[email]" type="email" id="contact_email" placeholder="Email" required="">
 						<button class="button btn-register">Đăng ký</button>
 						{% if form.posted_successfully? %}
 						<script>
-						$(window).ready(function(){
-							alert('Cám ơn bạn đã đăng ký email!');
-						});
+							$(window).ready(function () {
+								alert('Cám ơn bạn đã đăng ký email!');
+							});
 						</script>
 						{%endif%}
 						{%endform%}
 					</div>
 					{%endif%}
+
+					
+
+					<script>
+						/*$('.btn-register').click(function (e) {
+							e.preventDefault();
+							$('form#contact-form').submit();
+						});*/
+					</script>
 					{%if settings.footer_socials_show%}
 					<ul class="footer-icon">
 						<li><span>Follow us:</span></li>
 						{%if settings.facebook%}
-						<li><a href="{{settings.facebook_link}}" class="fb" target="_blank" rel="nofollow"><i class="fa fa-facebook-square"></i></a></li>
+						<li><a href="{{settings.facebook_link}}" class="fb" target="_blank" rel="nofollow"><i
+									class="fa fa-facebook-square"></i></a></li>
 						{%endif%}
 						{%if settings.google%}
-						<li><a href="{{settings.google_link}}" class="gg" target="_blank" rel="nofollow"><i class="fa fa-google-plus"></i></a></li>
+						<li><a href="{{settings.google_link}}" class="gg" target="_blank" rel="nofollow"><i
+									class="fa fa-google-plus"></i></a></li>
 						{%endif%}
 						{%if settings.youtube%}
-						<li><a href="{{settings.youtube_link}}" class="yt" target="_blank" rel="nofollow"><i class="fa fa-youtube"></i></a></li>
+						<li><a href="{{settings.youtube_link}}" class="yt" target="_blank" rel="nofollow"><i
+									class="fa fa-youtube"></i></a></li>
 						{%endif%}
 						{%if settings.twitter%}
-						<li><a href="{{settings.twitter_link}}" class="tw" target="_blank" rel="nofollow"><i class="fa fa-twitter"></i></a></li>
+						<li><a href="{{settings.twitter_link}}" class="tw" target="_blank" rel="nofollow"><i
+									class="fa fa-twitter"></i></a></li>
 						{%endif%}
 					</ul>
 					{%endif%}
@@ -166,12 +195,14 @@
 				{% capture footer_bottom_i_menu %}footer_bottom_{{i}}_menu{% endcapture %}
 				{% capture link_footer_bottom_i_menu %}{{ settings[footer_bottom_i_menu] }}{% endcapture %}
 				{% if settings[footer_bottom_i_show] %}
-				<div class="footer-col2" {% if forloop.index > 4 %}style="padding-top: 20px"{% endif %}>
-					<h4 class="footer-title"><a href="{{ settings[footer_bottom_i_link] }}">{{ settings[footer_bottom_i_title] }}</a></h4>
+				<div class="footer-col2" {% if forloop.index > 4 %}style="padding-top: 20px" {% endif %}>
+					<h4 class="footer-title"><a
+							href="{{ settings[footer_bottom_i_link] }}">{{ settings[footer_bottom_i_title] }}</a></h4>
 					<div class="footer-menu style2">
 						<ul>
 							{%for link in linklists[link_footer_bottom_i_menu].links%}
-							<li><a class="link-collection-footer" href="{{link.url}}" data-item="{{ link.object.products_count }}">{{link.title}}</a></li>
+							<li><a class="link-collection-footer" href="{{link.url}}"
+									data-item="{{ link.object.products_count }}">{{link.title}}</a></li>
 							{%endfor%}
 						</ul>
 					</div>
@@ -187,8 +218,10 @@
 {%unless settings.footer_bct_txt1 == ''%}
 <div class="footer-bottom">
 	<div class="container">
-		<div class="bottom_left text-center">			
-			<p>{{settings.footer_bct_txt1}} <!-- -<a rel="nofollow" target="_blank" href="https://www.haratop.com">Developed by Haratop</a>--></p>		
+		<div class="bottom_left text-center">
+			<p>{{settings.footer_bct_txt1}}
+				<!-- -<a rel="nofollow" target="_blank" href="https://www.haratop.com">Developed by Haratop</a>-->
+			</p>
 		</div>
 	</div>
 </div>
@@ -203,18 +236,18 @@
 {{ 'script.js'  | asset_url | script_tag }}
 {{ '365ok.js'  | asset_url | script_tag }}
 <script>
-$(function(){
-	$('.link-collection-footer').each(function(){
-		if($(this).data('item') == 0){
-			$(this).parent().remove();
+	$(function () {
+		$('.link-collection-footer').each(function () {
+			if ($(this).data('item') == 0) {
+				$(this).parent().remove();
+			}
+		})
+		if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+			$('.footer-top .footer-title').addClass('collapsed');
+			$('.footer-top .footer-menu').addClass('collapse');
+		} else {
+			$('.footer-top .footer-title').removeClass('collapsed');
+			$('.footer-top .footer-menu').removeClass('collapse');
 		}
 	})
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-		$('.footer-top .footer-title').addClass('collapsed');
-		$('.footer-top .footer-menu').addClass('collapse');
-	}else{
-		$('.footer-top .footer-title').removeClass('collapsed');
-		$('.footer-top .footer-menu').removeClass('collapse');
-	}
-})
 </script>

@@ -25,11 +25,13 @@
 		<meta name="revisit-after" content="1 day" />
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta name="HandheldFriendly" content="true">
+		{% include 'fb-open-graph-tags' %}
 		<link rel="dns-prefetch" href="{{ shop.url }}">
 		<link rel="dns-prefetch" href="//hstatic.net">
 		{{ content_for_header }}
 		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 		{%include 'master-include'%}
+
 		<!-- Facebook Pixel Code -->
 		<script>
 		!function(f,b,e,v,n,t,s)
